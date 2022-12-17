@@ -1,0 +1,73 @@
+
+.boton {
+  -fx-align-items: center;
+  -fx-appearance: button;
+  -fx-background-color: #0276FF;
+  -fx-border-radius: 8px;
+  -fx-border-style: none;
+  -fx-box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+  -fx-box-sizing: border-box;
+  -fx-color: #fff;
+  -fx-cursor: pointer;
+  -fx-display: flex;
+  -fx-flex-direction: row;
+  -fx-flex-shrink: 0;
+  -fx-font-family: "RM Neue",sans-serif;
+  -fx-font-size: 100%;
+  -fx-line-height: 1.15;
+  -fx-margin: 0;
+  -fx-padding: 10px 21px;
+  -fx-text-align: center;
+  -fx-text-fill: white;
+  -fx-text-transform: none;
+  -fx-transition: color .13s ease-in-out,background .13s ease-in-out,opacity .13s ease-in-out,box-shadow .13s ease-in-out;
+  -fx-user-select: none;
+  -fx--webkit-user-select: none;
+  -fx-touch-action: manipulation;
+}
+
+.boton:active {
+  -fx-background-color: #006AE8;
+  -fx-text-fill: white;
+}
+
+.boton:hover {
+  -fx-background-color: #1C84FF;
+  -fx-text-fill: white;
+}
+
+.background {
+    -fx-background-color: #c1eff3;
+}
+.label
+{
+-fx-text-fill: black;
+-fx-text-alignment: center;
+}
+
+.botonSalir {
+  -fx-align-items: center;
+  -fx-appearance: button;
+  -fx-background-color: #fd0316 ;
+  -fx-border-radius: 8px;
+  -fx-border-style: none;
+  -fx-box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
+  -fx-box-sizing: border-box;
+  -fx-color: #fff;
+  -fx-cursor: pointer;
+  -fx-display: flex;
+  -fx-flex-direction: row;
+  -fx-flex-shrink: 0;
+  -fx-font-family: "RM Neue",sans-serif;
+  -fx-font-size: 100%;
+  -fx-line-height: 1.15;
+  -fx-margin: 0;
+  -fx-padding: 10px 21px;
+  -fx-text-align: center;
+  -fx-text-fill: white;
+  -fx-text-transform: none;
+  -fx-transition: color .13s ease-in-out,background .13s ease-in-out,opacity .13s ease-in-out,box-shadow .13s ease-in-out;
+  -fx-user-select: none;
+  -fx--webkit-user-select: none;
+  -fx-touch-action: manipulation;
+}
