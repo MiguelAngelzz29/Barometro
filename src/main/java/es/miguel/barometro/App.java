@@ -1,14 +1,10 @@
 package es.miguel.barometro;
 
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import jfxtras.styles.jmetro.JMetro;
 import jfxtras.styles.jmetro.Style;

@@ -16,6 +16,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 
@@ -68,9 +69,10 @@ public class BarometroController implements Initializable {
         valueFactory.setValue("12:00");
         spinnerHora.setValueFactory(valueFactory);
         txtAltitud.setText("0");
-        barometro.cargarDatosJsonEnArrayList(listaDatos);
-        barometro.setListadatos(listaDatos);
-        barometro.calcular(imageViewIcono, barometro);
+        barometro.cargarDatosJsonEnArrayList();
+        barometro.setListaParametros(listaDatos);
+        System.out.println("imagen " + barometro.calcular(barometro));
+        mostrarImagen(barometro.calcular(barometro));
         barometro.calcularPresionConAltura(txtAltitud, txtPresionRef, listaDatos);
 
     }
@@ -129,9 +131,9 @@ public class BarometroController implements Initializable {
                 listaDatos.add(datos);
             }
 
-            barometro.calcular(imageViewIcono, barometro);
+            barometro.calcular(barometro);
             barometro.setIdBarometro(1);
-            barometro.setListadatos(listaDatos);
+            barometro.setListaParametros(listaDatos);
             barometro.escribirDatos(gson.toJson(barometro));
             limpiar();
         }
@@ -146,7 +148,7 @@ public class BarometroController implements Initializable {
     @FXML
     private void btnSalirClick(MouseEvent event) {
         barometro.setIdBarometro(1);
-        barometro.setListadatos(listaDatos);
+        barometro.setListaParametros(listaDatos);
         barometro.escribirDatos(gson.toJson(barometro));
         System.exit(0);
 
@@ -164,7 +166,58 @@ public class BarometroController implements Initializable {
 
     @FXML
     private void ListViewMostrarMediciones(MouseEvent event) {
-        barometro.llenarListViewPorFecha(listView, txtFechaSelect,
-                listaDatos);
+            ListView<Medicion> listaMedicion ;
+            ArrayList<Medicion> lista = barometro.cargarDatosJsonEnArrayList();
+            ArrayList<Medicion> listaProvisional = new ArrayList<>();
+            
+        for (int i = 0; i < lista.size(); i++) {
+
+            if (lista.get(i).getFecha().equals(txtFechaSelect.getValue())) {
+                listaProvisional.add(lista.get(i));
+            }
+        }
+
+        if (listaProvisional.isEmpty()) {
+           Image advertencia = new Image(getClass().getResourceAsStream("/es/miguel/iconos/advertencia.png"));
+                    imageViewIcono.setImage(advertencia);
+            listView.getItems().clear();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("ADVERTENCIA");
+            alert.setHeaderText("No hay mediciones para esta fecha");
+            alert.setContentText("");
+            alert.showAndWait();
+
+        }
+
+        ObservableList<Medicion> listaObservable = FXCollections.observableArrayList(listaProvisional);
+         listView.setItems(listaObservable);
+         barometro.calcular( barometro);
+        System.out.println("imagen2 " +barometro.calcular( barometro) );
+    }
+    
+    private void mostrarImagen(String prediccion){
+        
+          switch(prediccion){
+              
+                case "sol":
+                  Image imageSol = new Image(getClass().getResourceAsStream("/es/miguel/iconos/sol.png"));
+                  imageViewIcono.setImage(imageSol);
+                    break;
+                case "nubeSol":
+                    Image nubeSol = new Image(getClass().getResourceAsStream("/es/miguel/iconos/nubeSol.png"));
+                    imageViewIcono.setImage(nubeSol);
+                    break;
+                case "tormenta":
+                    Image tormenta = new Image(getClass().getResourceAsStream("/es/miguel/iconos/tormenta.png"));
+                    imageViewIcono.setImage(tormenta);
+                    break;
+                case "advertencia":
+                    Image advertencia = new Image(getClass().getResourceAsStream("/es/miguel/iconos/advertencia.png"));
+                    imageViewIcono.setImage(advertencia);
+                    break;
+                default:
+                    advertencia = new Image(getClass().getResourceAsStream("/es/miguel/iconos/advertencia.png"));
+                    imageViewIcono.setImage(advertencia);
+          }
     }
 }

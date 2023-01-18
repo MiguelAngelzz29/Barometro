@@ -10,13 +10,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
@@ -25,14 +19,15 @@ public class Barometro {
 
     private static final String localizacion = "src/main/resources/es/miguel/registros/registros.txt";
     private int idBarometro;
-    private ArrayList<Medicion> listadatos;
+    private ArrayList<Medicion> listaParametros;
+    
 
     public Barometro() {
     }
 
     public Barometro(int idBarometro, ArrayList<Medicion> listadatos) {
         this.idBarometro = idBarometro;
-        this.listadatos = listadatos;
+        this.listaParametros = listadatos;
     }
 
     public int getIdBarometro() {
@@ -43,12 +38,12 @@ public class Barometro {
         this.idBarometro = idBarometro;
     }
 
-    public ArrayList<Medicion> getListadatos() {
-        return listadatos;
+    public ArrayList<Medicion> getListaParametros() {
+        return listaParametros;
     }
 
-    public void setListadatos(ArrayList<Medicion> listadatos) {
-        this.listadatos = listadatos;
+    public void setListaParametros(ArrayList<Medicion> listaParametros) {
+        this.listaParametros = listaParametros;
     }
 
     // método para escribir datos 
@@ -63,7 +58,7 @@ public class Barometro {
 
                 File directorio = new File(barometroRegistro.getParent());
                 if (!directorio.exists()) {
-                    // mkdirs() crea el directorio expecificado en la ruta si no existen   
+                    // mkdirs() crea el directorio expecificado en la ruta si no existe  
                     directorio.mkdirs();
                 }
 
@@ -119,13 +114,14 @@ public class Barometro {
         }
     }
 
-    public void calcular(javafx.scene.image.ImageView icono, Barometro barometro) {
+    public String calcular(Barometro barometro) {
+        
 
-        ArrayList<Medicion> listaMediciones = barometro.getListadatos();
+        ArrayList<Medicion> listaMediciones = barometro.cargarDatosJsonEnArrayList();
 
         ArrayList<Medicion> listaUltimas24h = new ArrayList<>(listaMediciones
                 .subList(listaMediciones.size() - 24, listaMediciones.size()));
-
+        String prediccion = "advertencia";
         int ultimo = listaUltimas24h.size() - 1;
         double presion1 = listaUltimas24h.get(0).getPresion()
                 - (listaUltimas24h.get(ultimo).getPresion());
@@ -139,6 +135,7 @@ public class Barometro {
         //subeLento a true
         int contador = 0;
         boolean subeLento = false;
+        if(barometro.getListaParametros() != null){
         for (int i = 0; i < listaUltimas24h.size(); i++) {
 
             if (listaUltimas24h.get(i).getPresion() >= listaUltimas24h.get(i).getPresion()) {
@@ -150,26 +147,17 @@ public class Barometro {
             subeLento = true;
         }
 
-        if (presionUltima > presionRef && (presion1 - presionUltima) > 6) {
-
-            Image imageSol = new Image(getClass().getResourceAsStream("/es/miguel/iconos/sol.png"));
-            icono.setImage(imageSol);
-
+       if (presionUltima > presionRef && (presion1 - presionUltima) > 6) {
+             prediccion = "sol";
         } else if (presionUltima < presionPenultima - 1) {
-
-            Image tormenta = new Image(getClass().getResourceAsStream("/es/miguel/iconos/tormenta.png"));
-            icono.setImage(tormenta);
+            prediccion = "tormenta";  
         } else if ((presionUltima > presionPenultima + 1)) {
-
-            Image nubeSol = new Image(getClass().getResourceAsStream("/es/miguel/iconos/nubeSol.png"));
-            icono.setImage(nubeSol);
-
+            prediccion = "nubeSol";
         } else if (subeLento) {
-            Image imageSol = new Image(getClass().getResourceAsStream("/es/miguel/iconos/sol.png"));
-            icono.setImage(imageSol);
+            prediccion = "sol";  
         } else {
-            Image imageSol = new Image(getClass().getResourceAsStream("/es/miguel/iconos/advertencia.png"));
-            icono.setImage(imageSol);
+            prediccion = "advertencia";  
+        }
         }
 
         /*
@@ -180,6 +168,7 @@ public class Barometro {
         
         
          */
+        return prediccion;
     }
 
     public void calcularPresionConAltura(TextField altura, TextField presionRef, ArrayList<Medicion> lista) {
@@ -191,38 +180,12 @@ public class Barometro {
         presionRef.setText(pres + "");
     }
 
-    public ListView<Medicion> llenarListViewPorFecha(ListView<Medicion> lista, DatePicker date,
-            ArrayList<Medicion> listaMediciones) {
-        ArrayList<Medicion> listaProvisional = new ArrayList<>();
-
-        for (int i = 0; i < listaMediciones.size(); i++) {
-
-            if (listaMediciones.get(i).getFecha().equals(date.getValue())) {
-                listaProvisional.add(listaMediciones.get(i));
-                ;
-            }
-        }
-
-        if (listaProvisional.isEmpty()) {
-            lista.getItems().clear();
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("ADVERTENCIA");
-            alert.setHeaderText("No hay mediciones para esta fecha");
-            alert.setContentText("Juan Vicente, solo hay mediciones en el 15-16 Dic");
-            alert.showAndWait();
-
-        }
-
-        ObservableList<Medicion> listaObservable = FXCollections.observableArrayList(listaProvisional);
-        lista.setItems(listaObservable);
-
-        return lista;
-    }
+   
 
     //Método para leer los datos guardados en el .txt y llevarlos a un ArrayList
     //para poder trabajar con él
-    public void cargarDatosJsonEnArrayList(ArrayList<Medicion> lista) {
-
+    public ArrayList<Medicion> cargarDatosJsonEnArrayList() {
+        ArrayList<Medicion> lista = new ArrayList();
         JSONParser parser = new JSONParser();
 
         try {
@@ -231,11 +194,11 @@ public class Barometro {
 
             JSONObject jsonObject = (JSONObject) obj;
 
-            JSONArray listaDatos = (JSONArray) jsonObject.get("listadatos");
+            JSONArray listaMediciones = (JSONArray) jsonObject.get("listadatos");
 
-            for (int i = 0; i < listaDatos.size(); i++) {
+            for (int i = 0; i < listaMediciones.size(); i++) {
                 Medicion medicion = new Medicion();
-                JSONObject jsonObject1 = (JSONObject) listaDatos.get(i);
+                JSONObject jsonObject1 = (JSONObject) listaMediciones.get(i);
                 String date = jsonObject1.getAsString("fecha");
                 String[] arrSplit = date.split(",");
                 String year = arrSplit[1];
@@ -263,13 +226,16 @@ public class Barometro {
                 medicion.setAltitud(altitud);
                 double presionRef = Double.parseDouble(jsonObject1.getAsString("presionRef"));
                 medicion.setPresionRef(presionRef);
-
+                
                 lista.add(medicion);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        return lista;
+        
     }
 
 }
