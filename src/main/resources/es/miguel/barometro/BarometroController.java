@@ -88,11 +88,14 @@ public class BarometroController implements Initializable {
                 || txtVelocidad.getText().isEmpty() || txtAltitud.getText().isEmpty()
                 || txtPresionRef.getText().isEmpty()) {
 
-            Alert alert = new Alert(Alert.AlertType.WARNING);
+            btnGuardar.setDisable(true);
+            
+            
+         /*   Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("ADVERTENCIA");
             alert.setHeaderText("Revisar todos los campos");
             alert.setContentText("Hay algún campo vacío");
-            alert.showAndWait();
+            alert.showAndWait();*/
 
             // si no hay campos vacíos recojo los datos y los voy parseando
             // para conseguir el tipo de dato que necesito

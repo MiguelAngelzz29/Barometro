@@ -237,5 +237,9 @@ public class Barometro {
         return lista;
         
     }
+    
+    public void paraProbarElBranch(){
+        System.out.println("hola");
+    }
 
 }
