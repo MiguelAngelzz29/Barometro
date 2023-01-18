@@ -74,6 +74,7 @@ public class BarometroController implements Initializable {
         System.out.println("imagen " + barometro.calcular(barometro));
         mostrarImagen(barometro.calcular(barometro));
         barometro.calcularPresionConAltura(txtAltitud, txtPresionRef, listaDatos);
+         btnGuardar.setDisable(true);
 
     }
 
@@ -88,7 +89,7 @@ public class BarometroController implements Initializable {
                 || txtVelocidad.getText().isEmpty() || txtAltitud.getText().isEmpty()
                 || txtPresionRef.getText().isEmpty()) {
 
-            btnGuardar.setDisable(true);
+            btnGuardar.setDisable(false);
             
             
          /*   Alert alert = new Alert(Alert.AlertType.WARNING);
