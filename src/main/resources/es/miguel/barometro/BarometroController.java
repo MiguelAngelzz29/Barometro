@@ -89,7 +89,7 @@ public class BarometroController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         
         
-        //Asignamos el valor de cada etiqueta para la internalización
+        //Asignamos el valor de cada etiqueta para la internalización.
          bundle = rb;
          labeltemperatura.setText(bundle.getString("labelTemperatura"));
          labelRegistro.setText(bundle.getString("labelRegistro"));
