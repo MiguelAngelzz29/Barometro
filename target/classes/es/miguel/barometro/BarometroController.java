@@ -12,6 +12,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -33,8 +34,6 @@ public class BarometroController implements Initializable {
 
     @FXML
     private TextField txtPresion;
-    @FXML
-    private TextField txtTemperatura;
     @FXML
     private DatePicker txtFecha;
     @FXML
@@ -60,10 +59,55 @@ public class BarometroController implements Initializable {
     private TextField txtPresionRef;
     @FXML
     private Spinner<String> spinnerHora;
+    @FXML
+    private TextField txtTemperatura;
+     private ResourceBundle bundle; 
+    @FXML
+    private Label labelRegistro;
+    @FXML
+    private Label labelPresionRef;
+    @FXML
+    private Label labelPresion;
+    @FXML
+    private Label labeltemperatura;
+    @FXML
+    private Label labelFecha;
+    @FXML
+    private Label labelHora;
+    @FXML
+    private Label labelCalibracion;
+    @FXML
+    private Label labelAltitud;
+    @FXML
+    private Label labelRegistros;
+    @FXML
+    private Label labelSeleccionarFecha;
+    @FXML
+    private Label labelVelocidad;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
+        
+        //Asignamos el valor de cada etiqueta para la internalización
+         bundle = rb;
+         labeltemperatura.setText(bundle.getString("labelTemperatura"));
+         labelRegistro.setText(bundle.getString("labelRegistro"));
+         labelPresion.setText(bundle.getString("labelPresion"));
+         labelVelocidad.setText(bundle.getString("labelVelocidad"));
+         labelFecha.setText(bundle.getString("labelFecha"));
+         labelHora.setText(bundle.getString("labelHora"));
+         labelCalibracion.setText(bundle.getString("labelCalibracion"));
+         labelPresionRef.setText(bundle.getString("labelPresionRef"));
+         labelAltitud.setText(bundle.getString("labelAltitud"));
+         labelRegistros.setText(bundle.getString("labelRegistros"));
+         labelSeleccionarFecha.setText(bundle.getString("labelSeleccionarFecha"));
+         btnGuardar.setText(bundle.getString("btnGuardar"));
+         btnActualizar.setText(bundle.getString("btnActualizar"));
+         btnBuscar.setText(bundle.getString("btnSeleccionarFecha"));
+         
+         
+         
         SpinnerValueFactory<String> valueFactory
                 = new SpinnerValueFactory.ListSpinnerValueFactory<String>(horas);
         valueFactory.setValue("12:00");
@@ -74,8 +118,7 @@ public class BarometroController implements Initializable {
         System.out.println("imagen " + barometro.calcular(barometro));
         mostrarImagen(barometro.calcular(barometro));
         barometro.calcularPresionConAltura(txtAltitud, txtPresionRef, listaDatos);
-         btnGuardar.setDisable(true);
-
+ 
     }
 
     @FXML
@@ -83,24 +126,6 @@ public class BarometroController implements Initializable {
 
         Medicion datos = new Medicion();
 
-        // Antes de guarda compruebo que no quedan campos vacíos
-        //si hay alguno vacío salta una alerta
-        if (txtTemperatura.getText().isEmpty() || txtPresion.getText().isEmpty()
-                || txtVelocidad.getText().isEmpty() || txtAltitud.getText().isEmpty()
-                || txtPresionRef.getText().isEmpty()) {
-
-            btnGuardar.setDisable(false);
-            
-            
-         /*   Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("ADVERTENCIA");
-            alert.setHeaderText("Revisar todos los campos");
-            alert.setContentText("Hay algún campo vacío");
-            alert.showAndWait();*/
-
-            // si no hay campos vacíos recojo los datos y los voy parseando
-            // para conseguir el tipo de dato que necesito
-        } else {
             double temp = Double.parseDouble(txtTemperatura.getText());
             datos.setTemperatura(temp);
             double pres = Double.parseDouble(txtPresion.getText());
@@ -141,7 +166,7 @@ public class BarometroController implements Initializable {
             barometro.escribirDatos(gson.toJson(barometro));
             limpiar();
         }
-    }
+    
 
     @FXML
     private void btnActualizarClick(MouseEvent event) {
@@ -224,4 +249,17 @@ public class BarometroController implements Initializable {
                     imageViewIcono.setImage(advertencia);
           }
     }
+    
+    public void habilitarBotonGuardar(){
+            
+        if (txtTemperatura.getText().isEmpty() || txtPresion.getText().isEmpty()
+                || txtVelocidad.getText().isEmpty() || txtAltitud.getText().isEmpty()
+                || txtPresionRef.getText().isEmpty()) {
+
+            btnGuardar.setVisible(false);
+
+    }else{
+            btnGuardar.setVisible(true);
+        }
+}
 }

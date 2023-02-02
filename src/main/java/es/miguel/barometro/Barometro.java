@@ -118,17 +118,25 @@ public class Barometro {
         
 
         ArrayList<Medicion> listaMediciones = barometro.cargarDatosJsonEnArrayList();
-
-        ArrayList<Medicion> listaUltimas24h = new ArrayList<>(listaMediciones
-                .subList(listaMediciones.size() - 24, listaMediciones.size()));
-        String prediccion = "advertencia";
-        int ultimo = listaUltimas24h.size() - 1;
-        double presion1 = listaUltimas24h.get(0).getPresion()
-                - (listaUltimas24h.get(ultimo).getPresion());
-        double presionUltima = listaUltimas24h.get(ultimo).getPresion();
-        double presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();
-        double presionRef = listaUltimas24h.get(ultimo).getPresionRef();
+        double presion1 = 0;
+        double presionUltima = 0;
+        double presionPenultima = 0;
+        double presionRef = 0;
+        String prediccion = null;
         
+        ArrayList<Medicion> listaUltimas24h=null;
+        if(listaMediciones.size() >=24){
+        listaUltimas24h = new ArrayList<>(listaMediciones
+                .subList(listaMediciones.size() - 24, listaMediciones.size()));
+        
+        prediccion = "advertencia";
+        int ultimo = listaUltimas24h.size() - 1;
+        presion1 = listaUltimas24h.get(0).getPresion()
+                - (listaUltimas24h.get(ultimo).getPresion());
+        presionUltima = listaUltimas24h.get(ultimo).getPresion();
+        presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();
+        presionRef = listaUltimas24h.get(ultimo).getPresionRef();
+        }
         //Para calcular si sube la presión lentamente comparo una presion con la
         // anterior en las últimas 24h y si es superior o igual todas las comprobaciones
         // hago que un contador vaya sumando y si suma 24 (un día) paso el boolean 
@@ -159,7 +167,7 @@ public class Barometro {
             prediccion = "advertencia";  
         }
         }
-
+        
         /*
         si presión baja 6mm en 24h && presionUltima < presionUltima ref borrasca lejos (sol)
         else desciende 1mm en 1h borrasca profunda 
@@ -237,9 +245,4 @@ public class Barometro {
         return lista;
         
     }
-    
-    public void paraProbarElBranch(){
-        System.out.println("hola");
-    }
-
 }

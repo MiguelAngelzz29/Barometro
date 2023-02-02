@@ -44,32 +44,31 @@
       <RowConstraints maxHeight="266.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label text="Presión Referencia (hPa)" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Label text="Presión (hPa)" GridPane.columnIndex="3" GridPane.rowIndex="2" />
-      <Label text="Temperatura (ºC)" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-      <Label text="FECHA" GridPane.columnIndex="7" GridPane.rowIndex="2" />
-      <Label text="HORA" GridPane.columnIndex="9" GridPane.rowIndex="2" />
+     <Label fx:id="labelRegistro" stylesheets="@../css/estilo.css" text="%labelRegistro" GridPane.columnIndex="1" GridPane.rowIndex="1" /> 
+      <Label fx:id="labelPresionRef" text="%labelPresionRef" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+      <Label fx:id="labelPresion" text="%labelPresion" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Label fx:id="labeltemperatura" text="%labelTemperatura" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label fx:id="labelFecha" text="%labelFecha" GridPane.columnIndex="7" GridPane.rowIndex="2" />
+      <Label fx:id="labelHora" text="%labelHora" GridPane.columnIndex="9" GridPane.rowIndex="2" />
       <TextField fx:id="txtPresion" GridPane.columnIndex="3" GridPane.rowIndex="3" />
       <TextField fx:id="txtTemperatura" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <DatePicker fx:id="txtFecha" GridPane.columnIndex="7" GridPane.rowIndex="3" />
-      <Label stylesheets="@../css/estilo.css" text="REGISTRO" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-      <Button id="btnGuardar" fx:id="btnGuardar" mnemonicParsing="false" onMouseClicked="#btnGuardarClick" prefHeight="25.0" prefWidth="195.0" styleClass="boton" text="GUARDAR" GridPane.columnIndex="9" GridPane.rowIndex="5">
+      <Button id="btnGuardar" fx:id="btnGuardar" mnemonicParsing="false" onMouseClicked="#btnGuardarClick" prefHeight="25.0" prefWidth="195.0" styleClass="boton" text="%btnGuardar" GridPane.columnIndex="9" GridPane.rowIndex="5">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <Label text="CALIBRACIÓN" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-      <Label text="Altitud (m)" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+      <Label fx:id="labelCalibracion" text="%labelCalibracion" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label fx:id="labelAltitud" text="%labelAltitud" GridPane.columnIndex="3" GridPane.rowIndex="7" />
       <TextField fx:id="txtAltitud" GridPane.columnIndex="3" GridPane.rowIndex="8" />
       <TextField fx:id="txtPresionRef" GridPane.columnIndex="1" GridPane.rowIndex="8" />
       <TextField fx:id="txtVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-      <Label text="Velocidad" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-      <Button fx:id="btnActualizar" mnemonicParsing="false" onMouseClicked="#btnActualizarClick" prefHeight="37.0" prefWidth="149.0" styleClass="boton" text="ACTUALIZAR" GridPane.columnIndex="5" GridPane.rowIndex="8">
+      <Button fx:id="btnActualizar" mnemonicParsing="false" onMouseClicked="#btnActualizarClick" prefHeight="37.0" prefWidth="149.0" styleClass="boton" text="%btnActualizar" GridPane.columnIndex="5" GridPane.rowIndex="8">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
       <ListView fx:id="listView" prefHeight="121.0" prefWidth="446.0" GridPane.columnIndex="3" GridPane.columnSpan="7" GridPane.rowIndex="11" />
-      <Label contentDisplay="CENTER" text="REGISTROS" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
-      <Label alignment="CENTER" text="Seleccionar fecha" GridPane.columnIndex="1" GridPane.rowIndex="11">
+      <Label fx:id="labelRegistros" contentDisplay="CENTER" text="%labelRegistros" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+      <Label fx:id="labelSeleccionarFecha" alignment="CENTER" text="%labelSeleccionarFecha" GridPane.columnIndex="1" GridPane.rowIndex="11">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -88,10 +87,12 @@
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Button>
-      <Button fx:id="btnBuscar" mnemonicParsing="false" onMouseClicked="#ListViewMostrarMediciones" prefHeight="25.0" prefWidth="146.0" styleClass="boton" text="BUSCAR" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.valignment="BOTTOM">
+      <Button fx:id="btnBuscar" mnemonicParsing="false" onMouseClicked="#ListViewMostrarMediciones" prefHeight="25.0" prefWidth="146.0" styleClass="boton" text="%labelSeleccionarFecha" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.valignment="BOTTOM">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
       <Spinner fx:id="spinnerHora" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+      <Label fx:id="labelVelocidad" text="%labelVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="2" />  
+      
    </children>
 </GridPane>
