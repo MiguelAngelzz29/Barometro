@@ -15,10 +15,13 @@ public class App extends Application {
 
     private ResourceBundle resourceBundle;
     private static Scene scene;
+    private Locale locale;
+    
 
     @Override
     public void start(Stage stage) throws IOException {
-        loadLanguage();
+        locale = new Locale("es","ES");
+        loadLanguage(locale);
         scene = new Scene(loadFXML("barometro"), 770, 600);
         
         //Aquí utlizo el Theme JMetro
@@ -34,9 +37,10 @@ public class App extends Application {
     }
 
     //Método para cargar el lenguaje
-    private void loadLanguage() {
-        Locale locale = new Locale("es", "ES");
+    public void loadLanguage(Locale locale) {
+       
         resourceBundle = ResourceBundle.getBundle("es.miguel.idiomas.idioma",locale);
+       
        
     }
 
@@ -50,4 +54,11 @@ public class App extends Application {
         launch();
 
     }
+
+    public void setLocale(Locale locale) {
+        this.locale = locale;
+    }
+    
+    
+
 }

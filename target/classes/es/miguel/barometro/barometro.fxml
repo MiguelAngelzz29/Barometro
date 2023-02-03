@@ -21,11 +21,11 @@
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="141.0" minWidth="0.0" prefWidth="14.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="353.0" minWidth="10.0" prefWidth="124.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="286.0" minWidth="10.0" prefWidth="15.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="149.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="12.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="144.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="13.0" />
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="328.0" minWidth="10.0" prefWidth="128.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="127.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="14.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="323.0" minWidth="10.0" prefWidth="136.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="16.0" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="328.0" minWidth="10.0" prefWidth="153.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="328.0" minWidth="10.0" prefWidth="15.0" />
    </columnConstraints>
    <rowConstraints>
@@ -44,7 +44,7 @@
       <RowConstraints maxHeight="266.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-     <Label fx:id="labelRegistro" stylesheets="@../css/estilo.css" text="%labelRegistro" GridPane.columnIndex="1" GridPane.rowIndex="1" /> 
+      <Label fx:id="labelRegistro" text="%labelRegistro" GridPane.columnIndex="1" GridPane.rowIndex="1" /> 
       <Label fx:id="labelPresionRef" text="%labelPresionRef" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <Label fx:id="labelPresion" text="%labelPresion" GridPane.columnIndex="3" GridPane.rowIndex="2" />
       <Label fx:id="labeltemperatura" text="%labelTemperatura" GridPane.columnIndex="1" GridPane.rowIndex="2" />
@@ -92,7 +92,21 @@
             <Font name="System Bold" size="14.0" />
          </font></Button>
       <Spinner fx:id="spinnerHora" GridPane.columnIndex="9" GridPane.rowIndex="3" />
-      <Label fx:id="labelVelocidad" text="%labelVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="2" />  
+      <Label fx:id="labelVelocidad" text="%labelVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="2" />
+      <Button fx:id="btnEspanol" mnemonicParsing="false" onMouseClicked="#btnEspanolClick" text="ES" GridPane.columnIndex="9">
+         <GridPane.margin>
+            <Insets bottom="135.0" left="5.0" right="5.0" top="5.0" />
+         </GridPane.margin></Button>
+      <Button fx:id="btnIngles" mnemonicParsing="false" onMouseClicked="#btnInglesClick" text="EN" GridPane.columnIndex="9">
+         <GridPane.margin>
+            <Insets bottom="135.0" left="40.0" top="5.0" />
+         </GridPane.margin>
+      </Button>
+      <Button fx:id="btnFrances" mnemonicParsing="false" onMouseClicked="#btnFrancesClick" text="FR" GridPane.columnIndex="9">
+         <GridPane.margin>
+            <Insets bottom="135.0" left="78.0" top="5.0" />
+         </GridPane.margin>
+      </Button>  
       
    </children>
 </GridPane>
