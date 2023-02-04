@@ -44,29 +44,50 @@
       <RowConstraints maxHeight="266.0" minHeight="10.0" prefHeight="16.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <Label fx:id="labelRegistro" text="%labelRegistro" GridPane.columnIndex="1" GridPane.rowIndex="1" /> 
-      <Label fx:id="labelPresionRef" text="%labelPresionRef" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-      <Label fx:id="labelPresion" text="%labelPresion" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Button id="btnIngles" fx:id="btnIngles" accessibleText="Botón idioma Inglés" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnInglesClick" prefHeight="20.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
+         <GridPane.margin>
+            <Insets bottom="135.0" left="5.0" top="5.0" />
+         </GridPane.margin>
+      </Button>
+      <Button id="btnEspanol" fx:id="btnEspanol" accessibleText="Botón idioma español" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnEspanolClick" prefHeight="20.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
+         <GridPane.margin>
+            <Insets bottom="135.0" left="40.0" top="5.0" />
+         </GridPane.margin>
+      </Button>
+      <Button id="btnFrances" fx:id="btnFrances" accessibleText="Botón idioma Francés" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnFrancesClick" prefHeight="24.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
+         <GridPane.margin>
+            <Insets bottom="135.0" left="75.0" top="5.0" />
+         </GridPane.margin>
+      </Button>
+      <Button fx:id="btnSalir" accessibleHelp="Este botón cierra el barómetro" accessibleText="Botón cerrar" mnemonicParsing="false" onMouseClicked="#btnSalirClick" prefHeight="37.0" prefWidth="51.0" styleClass="botonSalir" text="X" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font></Button>
+      <ImageView fx:id="imageViewIcono" accessibleHelp="Muestra una imagen del tiempo actual" accessibleText="Imagen del tiempo" fitHeight="150.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true" styleClass="background" GridPane.columnIndex="4" GridPane.columnSpan="3" />
+      <Label fx:id="labelRegistro" accessibleHelp="A continuación se van añadiendo los registros" accessibleText="Registro" text="%labelRegistro" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label fx:id="labeltemperatura" text="%labelTemperatura" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+      <Label fx:id="labelPresion" text="%labelPresion" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+      <Label fx:id="labelVelocidad" text="%labelVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="2" />
       <Label fx:id="labelFecha" text="%labelFecha" GridPane.columnIndex="7" GridPane.rowIndex="2" />
       <Label fx:id="labelHora" text="%labelHora" GridPane.columnIndex="9" GridPane.rowIndex="2" />
-      <TextField fx:id="txtPresion" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-      <TextField fx:id="txtTemperatura" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-      <DatePicker fx:id="txtFecha" GridPane.columnIndex="7" GridPane.rowIndex="3" />
-      <Button id="btnGuardar" fx:id="btnGuardar" mnemonicParsing="false" onMouseClicked="#btnGuardarClick" prefHeight="25.0" prefWidth="195.0" styleClass="boton" text="%btnGuardar" GridPane.columnIndex="9" GridPane.rowIndex="5">
+      <TextField fx:id="txtTemperatura" accessibleHelp="Aquí se añaden los datos de temperatura" accessibleText="Campo temperatura" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="txtPresion" accessibleHelp="Aquí se añaden los datos de presión" accessibleText="Campo presión" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+      <TextField fx:id="txtVelocidad" accessibleHelp="Aquí se añaden los datos de velocidad" accessibleText="Campo velocidad" GridPane.columnIndex="5" GridPane.rowIndex="3" />
+      <DatePicker fx:id="txtFecha" accessibleHelp="Aquí se añaden los datos de fecha" accessibleText="Campo fecha" GridPane.columnIndex="7" GridPane.rowIndex="3" />
+      <Spinner fx:id="spinnerHora" accessibleHelp="Aquí se añaden los datos de hora" accessibleText="Campo hora" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+      <Button id="btnGuardar" fx:id="btnGuardar" accessibleHelp="Botón guardar" accessibleText="Este botón guarda todos los registros" mnemonicParsing="false" onMouseClicked="#btnGuardarClick" prefHeight="25.0" prefWidth="195.0" styleClass="boton" text="%btnGuardar" GridPane.columnIndex="9" GridPane.rowIndex="5">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <Label fx:id="labelCalibracion" text="%labelCalibracion" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+      <Label fx:id="labelCalibracion" text="%labelCalibracion" GridPane.columnIndex="1" GridPane.rowIndex="6" /> 
+      <Label fx:id="labelPresionRef" text="%labelPresionRef" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <Label fx:id="labelAltitud" text="%labelAltitud" GridPane.columnIndex="3" GridPane.rowIndex="7" />
-      <TextField fx:id="txtAltitud" GridPane.columnIndex="3" GridPane.rowIndex="8" />
-      <TextField fx:id="txtPresionRef" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      <TextField fx:id="txtVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="3" />
-      <Button fx:id="btnActualizar" mnemonicParsing="false" onMouseClicked="#btnActualizarClick" prefHeight="37.0" prefWidth="149.0" styleClass="boton" text="%btnActualizar" GridPane.columnIndex="5" GridPane.rowIndex="8">
+      <TextField fx:id="txtPresionRef" accessibleText="Campo presión de referencia" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+      <TextField fx:id="txtAltitud" accessibleText="Campo altitud" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+      <Button fx:id="btnActualizar" accessibleHelp="Botón actualizar" accessibleText="Este botón actualiza la calibración del barómetro" mnemonicParsing="false" onMouseClicked="#btnActualizarClick" prefHeight="37.0" prefWidth="149.0" styleClass="boton" text="%btnActualizar" GridPane.columnIndex="5" GridPane.rowIndex="8">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <ListView fx:id="listView" prefHeight="121.0" prefWidth="446.0" GridPane.columnIndex="3" GridPane.columnSpan="7" GridPane.rowIndex="11" />
       <Label fx:id="labelRegistros" contentDisplay="CENTER" text="%labelRegistros" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
       <Label fx:id="labelSeleccionarFecha" alignment="CENTER" text="%labelSeleccionarFecha" GridPane.columnIndex="1" GridPane.rowIndex="11">
          <opaqueInsets>
@@ -81,32 +102,12 @@
          <padding>
             <Insets bottom="75.0" />
          </padding></Label>
-      <DatePicker fx:id="txtFechaSelect" GridPane.columnIndex="1" GridPane.rowIndex="11" />
-      <ImageView fx:id="imageViewIcono" fitHeight="150.0" fitWidth="280.0" pickOnBounds="true" preserveRatio="true" styleClass="background" GridPane.columnIndex="4" GridPane.columnSpan="3" />
-      <Button fx:id="btnSalir" mnemonicParsing="false" onMouseClicked="#btnSalirClick" prefHeight="37.0" prefWidth="51.0" styleClass="botonSalir" text="X" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
-         <font>
-            <Font name="System Bold" size="24.0" />
-         </font></Button>
-      <Button fx:id="btnBuscar" mnemonicParsing="false" onMouseClicked="#ListViewMostrarMediciones" prefHeight="25.0" prefWidth="146.0" styleClass="boton" text="%labelSeleccionarFecha" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.valignment="BOTTOM">
+      <DatePicker fx:id="txtFechaSelect" accessibleHelp="Campo para seleccionar la fecha y mostrar registros" accessibleText="Seleccionar fecha" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+      <Button fx:id="btnBuscar" accessibleHelp="Haciendo click en este botón se muestran los registros de la fecha seleccionada" accessibleText="Botón buscar" mnemonicParsing="false" onMouseClicked="#ListViewMostrarMediciones" prefHeight="25.0" prefWidth="146.0" styleClass="boton" text="%labelSeleccionarFecha" textFill="WHITE" GridPane.columnIndex="1" GridPane.rowIndex="11" GridPane.valignment="BOTTOM">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <Spinner fx:id="spinnerHora" GridPane.columnIndex="9" GridPane.rowIndex="3" />
-      <Label fx:id="labelVelocidad" text="%labelVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-      <Button id="btnEspanol" fx:id="btnEspanol" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnEspanolClick" prefHeight="24.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
-         <GridPane.margin>
-            <Insets bottom="135.0" left="40.0" top="5.0" />
-         </GridPane.margin></Button>
-      <Button id="btnIngles" fx:id="btnIngles" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnInglesClick" prefHeight="24.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
-         <GridPane.margin>
-            <Insets bottom="135.0" left="5.0" top="5.0" />
-         </GridPane.margin>
-      </Button>
-      <Button id="btnFrances" fx:id="btnFrances" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnFrancesClick" prefHeight="24.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
-         <GridPane.margin>
-            <Insets bottom="135.0" left="75.0" top="5.0" />
-         </GridPane.margin>
-      </Button>  
+      <ListView fx:id="listView" prefHeight="121.0" prefWidth="446.0" GridPane.columnIndex="3" GridPane.columnSpan="7" GridPane.rowIndex="11" />  
       
    </children>
 </GridPane>

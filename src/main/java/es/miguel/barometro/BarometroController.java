@@ -435,7 +435,7 @@ public class BarometroController implements Initializable {
         Image banderaFr = new Image (linkBanderaFr.toString(),32,32,false,true);
         btnFrances.setGraphic(new ImageView(banderaFr));
     }
-
+    
     }
 
 
