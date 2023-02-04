@@ -15,22 +15,31 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.controlsfx.validation.Severity;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
@@ -111,15 +120,18 @@ public class BarometroController implements Initializable {
     private Properties config;
     private Locale locale;
     private ResourceBundle bundles;
+    private Task task;
     private String idioma;
     private String pais;
+    private Stage stage;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+         
         cargarIdioma();
         locale = new Locale(idioma, pais);
         bundle = ResourceBundle.getBundle("es.miguel.idiomas.idioma", locale);
-
+        cargarImagenesBotones();
         internalizacion(bundle);
         validarTextFields();
 
@@ -138,7 +150,7 @@ public class BarometroController implements Initializable {
 
     @FXML
     private void btnGuardarClick(MouseEvent event) {
-
+        
         Medicion datos = new Medicion();
 
         double temp = Double.parseDouble(txtTemperatura.getText());
@@ -184,7 +196,8 @@ public class BarometroController implements Initializable {
 
     @FXML
     private void btnActualizarClick(MouseEvent event) {
-        barometro.leerRegistros();
+      cargarBarraProgreso();
+      //  barometro.leerRegistros();
         barometro.calcularPresionConAltura(txtAltitud, txtPresionRef, listaDatos);
     }
 
@@ -389,5 +402,40 @@ public class BarometroController implements Initializable {
             ex.printStackTrace();
         }
     }
+    
+    private void cargarBarraProgreso(){
+            
+      try {
+         FXMLLoader loader = new FXMLLoader(getClass().getResource("progressBar.fxml"));
+         stage = new Stage();
+         stage.setScene(new Scene(loader.load()));
+         ProgressBarController progresBar = loader.getController();
+         progresBar.setMainController(this);
+         stage.initModality(Modality.APPLICATION_MODAL);
+         stage.show();
+         progresBar.cerrarVentana(stage);
+         
+      } catch (Exception e) {
+         e.printStackTrace();
+      }
+   }
+    
+    private void cargarImagenesBotones(){
+        btnEspanol.setBorder(Border.EMPTY);
+        btnIngles.setBorder(Border.EMPTY);
+        btnFrances.setBorder(Border.EMPTY);
+        
+        URL linkBanderaEs = getClass().getResource("/es/miguel/iconos/banderaEsp.png"); 
+        Image banderaEs = new Image (linkBanderaEs.toString(),32,32,false,true);
+        btnEspanol.setGraphic(new ImageView(banderaEs));
+        URL linkBanderaIng = getClass().getResource("/es/miguel/iconos/banderaIng.png"); 
+        Image banderaIng = new Image (linkBanderaIng.toString(),32,32,false,true);
+        btnIngles.setGraphic(new ImageView(banderaIng));
+        URL linkBanderaFr = getClass().getResource("/es/miguel/iconos/banderaFran.png"); 
+        Image banderaFr = new Image (linkBanderaFr.toString(),32,32,false,true);
+        btnFrances.setGraphic(new ImageView(banderaFr));
+    }
 
-}
+    }
+
+

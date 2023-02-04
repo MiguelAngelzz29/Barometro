@@ -7,6 +7,7 @@ module es.miguel.barometro {
     requires org.controlsfx.controls;
     requires java.sql;
     requires javafx.graphics;
+    requires java.base;
     
 //    requires controlsfx;
     

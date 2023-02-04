@@ -20,6 +20,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
+        
         locale = new Locale("es","ES");
         loadLanguage(locale);
         scene = new Scene(loadFXML("barometro"), 770, 600);

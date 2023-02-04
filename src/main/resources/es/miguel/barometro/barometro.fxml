@@ -93,18 +93,18 @@
          </font></Button>
       <Spinner fx:id="spinnerHora" GridPane.columnIndex="9" GridPane.rowIndex="3" />
       <Label fx:id="labelVelocidad" text="%labelVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="2" />
-      <Button fx:id="btnEspanol" mnemonicParsing="false" onMouseClicked="#btnEspanolClick" text="ES" GridPane.columnIndex="9">
-         <GridPane.margin>
-            <Insets bottom="135.0" left="5.0" right="5.0" top="5.0" />
-         </GridPane.margin></Button>
-      <Button fx:id="btnIngles" mnemonicParsing="false" onMouseClicked="#btnInglesClick" text="EN" GridPane.columnIndex="9">
+      <Button id="btnEspanol" fx:id="btnEspanol" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnEspanolClick" prefHeight="24.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
          <GridPane.margin>
             <Insets bottom="135.0" left="40.0" top="5.0" />
+         </GridPane.margin></Button>
+      <Button id="btnIngles" fx:id="btnIngles" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnInglesClick" prefHeight="24.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
+         <GridPane.margin>
+            <Insets bottom="135.0" left="5.0" top="5.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnFrances" mnemonicParsing="false" onMouseClicked="#btnFrancesClick" text="FR" GridPane.columnIndex="9">
+      <Button id="btnFrances" fx:id="btnFrances" minWidth="24.0" mnemonicParsing="false" onMouseClicked="#btnFrancesClick" prefHeight="24.0" prefWidth="24.0" styleClass="botonIdioma" stylesheets="@../css/estilo.css" GridPane.columnIndex="9">
          <GridPane.margin>
-            <Insets bottom="135.0" left="78.0" top="5.0" />
+            <Insets bottom="135.0" left="75.0" top="5.0" />
          </GridPane.margin>
       </Button>  
       
