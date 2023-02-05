@@ -12,19 +12,17 @@ import javafx.stage.Stage;
 
 public class ProgressBarController implements Initializable {
 
-
     @FXML
     private Label lbProgressBar;
     private Task task;
     private BarometroController barometroController;
     private double progress;
-     private Stage stage;
+    private Stage stage;
     @FXML
     private ProgressBar idProgressBar;
     @FXML
     private ProgressBar p2;
-  
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         stage = new Stage();
@@ -32,9 +30,9 @@ public class ProgressBarController implements Initializable {
 
         idProgressBar.progressProperty().bind(task.progressProperty());
         lbProgressBar.textProperty().bind(task.messageProperty());
-       
+
         new Thread(task).start();
-       }
+    }
 
     public Task createWorker() {
         return new Task() {
@@ -50,31 +48,31 @@ public class ProgressBarController implements Initializable {
                     updateMessage(" "
                             + WORDS[(int) (Math.random() * (WORDS.length - 1))]);
                     updateProgress(i + 1, 10);
-                    
+
                 }
                 updateMessage("Terminado!");
-                
+
                 return true;
             }
         };
-        
+
     }
-    
-    public void cerrarVentana(Stage stage){
-         idProgressBar.progressProperty().addListener((observable, oldValue, newValue) -> {
-               if (newValue.doubleValue() == 1.0) {
-                   stage.close();
-                }
+
+    public void cerrarVentana(Stage stage) {
+        idProgressBar.progressProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue.doubleValue() == 1.0) {
+                stage.close();
+            }
         });
     }
-   
-   public void setMainController(BarometroController barometroController) {
-      this.barometroController = barometroController;
-   }
-   
-   public void setStage(Stage stage) {
-      this.stage = stage;
-        
-    }  
-    
+
+    public void setMainController(BarometroController barometroController) {
+        this.barometroController = barometroController;
+    }
+
+    public void setStage(Stage stage) {
+        this.stage = stage;
+
+    }
+
 }

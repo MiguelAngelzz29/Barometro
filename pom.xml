@@ -72,6 +72,7 @@
                         <configuration>
                             <options>
                                 <option>--add-opens=javafx.graphics/javafx.scene=org.controlsfx.controls</option>
+                                
                             </options>
                         </configuration>
                     </execution>

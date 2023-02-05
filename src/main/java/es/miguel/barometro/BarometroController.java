@@ -10,13 +10,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.ResourceBundle;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -30,7 +28,6 @@ import javafx.scene.control.Control;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.TextField;
@@ -44,6 +41,9 @@ import org.controlsfx.validation.Severity;
 import org.controlsfx.validation.ValidationResult;
 import org.controlsfx.validation.ValidationSupport;
 import org.controlsfx.validation.Validator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javafx.scene.control.ListCell;
 
 public class BarometroController implements Initializable {
 
@@ -127,7 +127,7 @@ public class BarometroController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-         
+
         cargarIdioma();
         locale = new Locale(idioma, pais);
         bundle = ResourceBundle.getBundle("es.miguel.idiomas.idioma", locale);
@@ -150,7 +150,7 @@ public class BarometroController implements Initializable {
 
     @FXML
     private void btnGuardarClick(MouseEvent event) {
-        
+
         Medicion datos = new Medicion();
 
         double temp = Double.parseDouble(txtTemperatura.getText());
@@ -159,7 +159,17 @@ public class BarometroController implements Initializable {
         datos.setPresion(pres);
         double vel = Double.parseDouble(txtVelocidad.getText());
         datos.setVelocidad(vel);
-        LocalDate fech = txtFecha.getValue();
+        GregorianCalendar fech = new GregorianCalendar();
+        String fecha1 = txtFecha.getValue().toString();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = sdf.parse(fecha1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        fech.setTime(date);
         datos.setFecha(fech);
         String[] hora1 = spinnerHora.getValue().toString().split(":");
         int hora = Integer.parseInt(hora1[0]);
@@ -185,7 +195,9 @@ public class BarometroController implements Initializable {
 
         if (!repetido) {
             listaDatos.add(datos);
+
         }
+        System.out.println(listaDatos);
 
         barometro.calcular(barometro);
         barometro.setIdBarometro(1);
@@ -196,16 +208,14 @@ public class BarometroController implements Initializable {
 
     @FXML
     private void btnActualizarClick(MouseEvent event) {
-      cargarBarraProgreso();
-      //  barometro.leerRegistros();
+        cargarBarraProgreso();
+        //barometro.leerRegistros();
         barometro.calcularPresionConAltura(txtAltitud, txtPresionRef, listaDatos);
     }
 
     @FXML
     private void btnSalirClick(MouseEvent event) {
-        barometro.setIdBarometro(1);
-        barometro.setListaParametros(listaDatos);
-        barometro.escribirDatos(gson.toJson(barometro));
+
         System.exit(0);
 
     }
@@ -225,10 +235,15 @@ public class BarometroController implements Initializable {
         ListView<Medicion> listaMedicion;
         ArrayList<Medicion> lista = barometro.cargarDatosJsonEnArrayList();
         ArrayList<Medicion> listaProvisional = new ArrayList<>();
-
+        GregorianCalendar fecha;
         for (int i = 0; i < lista.size(); i++) {
+            fecha = new GregorianCalendar();
+            fecha = lista.get(i).getFecha();
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
-            if (lista.get(i).getFecha().equals(txtFechaSelect.getValue())) {
+            String fech = dateFormat.format(fecha.getTime());
+
+            if (fech.equals(txtFechaSelect.getValue().toString())) {
                 listaProvisional.add(lista.get(i));
             }
         }
@@ -246,9 +261,23 @@ public class BarometroController implements Initializable {
         }
 
         ObservableList<Medicion> listaObservable = FXCollections.observableArrayList(listaProvisional);
+        listView.setCellFactory(lv -> new ListCell<Medicion>() {
+            @Override
+            protected void updateItem(Medicion medicion, boolean empty) {
+                super.updateItem(medicion, empty);
+
+                if (empty || medicion == null) {
+                    setText(null);
+                } else {
+                    setText("Hora: " + medicion.getHora() + " Temperatura "
+                            + medicion.getTemperatura() + " Presión: " + medicion.getPresion()
+                            + " Velocidad Viento: " + medicion.getVelocidad());
+                }
+            }
+        });
         listView.setItems(listaObservable);
         barometro.calcular(barometro);
-        System.out.println("imagen2 " + barometro.calcular(barometro));
+
     }
 
     private void mostrarImagen(String prediccion) {
@@ -402,40 +431,38 @@ public class BarometroController implements Initializable {
             ex.printStackTrace();
         }
     }
-    
-    private void cargarBarraProgreso(){
-            
-      try {
-         FXMLLoader loader = new FXMLLoader(getClass().getResource("progressBar.fxml"));
-         stage = new Stage();
-         stage.setScene(new Scene(loader.load()));
-         ProgressBarController progresBar = loader.getController();
-         progresBar.setMainController(this);
-         stage.initModality(Modality.APPLICATION_MODAL);
-         stage.show();
-         progresBar.cerrarVentana(stage);
-         
-      } catch (Exception e) {
-         e.printStackTrace();
-      }
-   }
-    
-    private void cargarImagenesBotones(){
+
+    private void cargarBarraProgreso() {
+
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("progressBar.fxml"));
+            stage = new Stage();
+            stage.setScene(new Scene(loader.load()));
+            ProgressBarController progresBar = loader.getController();
+            progresBar.setMainController(this);
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.show();
+            progresBar.cerrarVentana(stage);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void cargarImagenesBotones() {
         btnEspanol.setBorder(Border.EMPTY);
         btnIngles.setBorder(Border.EMPTY);
         btnFrances.setBorder(Border.EMPTY);
-        
-        URL linkBanderaEs = getClass().getResource("/es/miguel/iconos/banderaEsp.png"); 
-        Image banderaEs = new Image (linkBanderaEs.toString(),32,32,false,true);
+
+        URL linkBanderaEs = getClass().getResource("/es/miguel/iconos/banderaEsp.png");
+        Image banderaEs = new Image(linkBanderaEs.toString(), 32, 32, false, true);
         btnEspanol.setGraphic(new ImageView(banderaEs));
-        URL linkBanderaIng = getClass().getResource("/es/miguel/iconos/banderaIng.png"); 
-        Image banderaIng = new Image (linkBanderaIng.toString(),32,32,false,true);
+        URL linkBanderaIng = getClass().getResource("/es/miguel/iconos/banderaIng.png");
+        Image banderaIng = new Image(linkBanderaIng.toString(), 32, 32, false, true);
         btnIngles.setGraphic(new ImageView(banderaIng));
-        URL linkBanderaFr = getClass().getResource("/es/miguel/iconos/banderaFran.png"); 
-        Image banderaFr = new Image (linkBanderaFr.toString(),32,32,false,true);
+        URL linkBanderaFr = getClass().getResource("/es/miguel/iconos/banderaFran.png");
+        Image banderaFr = new Image(linkBanderaFr.toString(), 32, 32, false, true);
         btnFrances.setGraphic(new ImageView(banderaFr));
     }
-    
-    }
 
-
+}

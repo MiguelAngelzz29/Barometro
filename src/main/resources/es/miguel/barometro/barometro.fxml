@@ -59,7 +59,7 @@
             <Insets bottom="135.0" left="75.0" top="5.0" />
          </GridPane.margin>
       </Button>
-      <Button fx:id="btnSalir" accessibleHelp="Este botón cierra el barómetro" accessibleText="Botón cerrar" mnemonicParsing="false" onMouseClicked="#btnSalirClick" prefHeight="37.0" prefWidth="51.0" styleClass="botonSalir" text="X" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
+      <Button fx:id="btnSalir" accessibleHelp="Este botón cierra el barómetro" accessibleText="Botón cerrar" mnemonicParsing="false" onMouseClicked="#btnSalirClick" prefHeight="37.0" prefWidth="51.0" styleClass="botonSalir" stylesheets="@../css/estilo.css" text="X" GridPane.columnIndex="9" GridPane.columnSpan="2" GridPane.halignment="RIGHT" GridPane.valignment="TOP">
          <font>
             <Font name="System Bold" size="24.0" />
          </font></Button>
@@ -70,11 +70,11 @@
       <Label fx:id="labelVelocidad" text="%labelVelocidad" GridPane.columnIndex="5" GridPane.rowIndex="2" />
       <Label fx:id="labelFecha" text="%labelFecha" GridPane.columnIndex="7" GridPane.rowIndex="2" />
       <Label fx:id="labelHora" text="%labelHora" GridPane.columnIndex="9" GridPane.rowIndex="2" />
-      <TextField fx:id="txtTemperatura" accessibleHelp="Aquí se añaden los datos de temperatura" accessibleText="Campo temperatura" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+      <TextField fx:id="txtTemperatura" accessibleHelp="Aquí se añaden los datos de temperatura" accessibleText="Campo temperatura" stylesheets="@../css/estilo.css" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       <TextField fx:id="txtPresion" accessibleHelp="Aquí se añaden los datos de presión" accessibleText="Campo presión" GridPane.columnIndex="3" GridPane.rowIndex="3" />
       <TextField fx:id="txtVelocidad" accessibleHelp="Aquí se añaden los datos de velocidad" accessibleText="Campo velocidad" GridPane.columnIndex="5" GridPane.rowIndex="3" />
       <DatePicker fx:id="txtFecha" accessibleHelp="Aquí se añaden los datos de fecha" accessibleText="Campo fecha" GridPane.columnIndex="7" GridPane.rowIndex="3" />
-      <Spinner fx:id="spinnerHora" accessibleHelp="Aquí se añaden los datos de hora" accessibleText="Campo hora" GridPane.columnIndex="9" GridPane.rowIndex="3" />
+      <Spinner fx:id="spinnerHora" accessibleHelp="Aquí se añaden los datos de hora" accessibleText="Campo hora" styleClass="spinne" stylesheets="@../css/estilo.css" GridPane.columnIndex="9" GridPane.rowIndex="3" />
       <Button id="btnGuardar" fx:id="btnGuardar" accessibleHelp="Botón guardar" accessibleText="Este botón guarda todos los registros" mnemonicParsing="false" onMouseClicked="#btnGuardarClick" prefHeight="25.0" prefWidth="195.0" styleClass="boton" text="%btnGuardar" GridPane.columnIndex="9" GridPane.rowIndex="5">
          <font>
             <Font name="System Bold" size="14.0" />
@@ -83,12 +83,12 @@
       <Label fx:id="labelPresionRef" text="%labelPresionRef" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <Label fx:id="labelAltitud" text="%labelAltitud" GridPane.columnIndex="3" GridPane.rowIndex="7" />
       <TextField fx:id="txtPresionRef" accessibleText="Campo presión de referencia" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-      <TextField fx:id="txtAltitud" accessibleText="Campo altitud" GridPane.columnIndex="3" GridPane.rowIndex="8" />
+      <TextField fx:id="txtAltitud" accessibleText="Campo altitud" styleClass="campo" GridPane.columnIndex="3" GridPane.rowIndex="8" />
       <Button fx:id="btnActualizar" accessibleHelp="Botón actualizar" accessibleText="Este botón actualiza la calibración del barómetro" mnemonicParsing="false" onMouseClicked="#btnActualizarClick" prefHeight="37.0" prefWidth="149.0" styleClass="boton" text="%btnActualizar" GridPane.columnIndex="5" GridPane.rowIndex="8">
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <Label fx:id="labelRegistros" contentDisplay="CENTER" text="%labelRegistros" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
+      <Label fx:id="labelRegistros" contentDisplay="CENTER" text="%labelRegistros" GridPane.columnIndex="5" GridPane.columnSpan="3" GridPane.halignment="CENTER" GridPane.rowIndex="10" />
       <Label fx:id="labelSeleccionarFecha" alignment="CENTER" text="%labelSeleccionarFecha" GridPane.columnIndex="1" GridPane.rowIndex="11">
          <opaqueInsets>
             <Insets />
@@ -107,7 +107,7 @@
          <font>
             <Font name="System Bold" size="14.0" />
          </font></Button>
-      <ListView fx:id="listView" prefHeight="121.0" prefWidth="446.0" GridPane.columnIndex="3" GridPane.columnSpan="7" GridPane.rowIndex="11" />  
+      <ListView fx:id="listView" accessibleText="Listado de registros" prefHeight="121.0" prefWidth="446.0" styleClass="campo" stylesheets="@../css/estilo.css" GridPane.columnIndex="3" GridPane.columnSpan="7" GridPane.rowIndex="11" />  
       
    </children>
 </GridPane>

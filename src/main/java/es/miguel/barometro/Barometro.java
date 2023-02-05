@@ -8,8 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import javafx.scene.control.TextField;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
@@ -20,7 +20,6 @@ public class Barometro {
     private static final String localizacion = "src/main/resources/es/miguel/registros/registros.txt";
     private int idBarometro;
     private ArrayList<Medicion> listaParametros;
-    
 
     public Barometro() {
     }
@@ -115,7 +114,6 @@ public class Barometro {
     }
 
     public String calcular(Barometro barometro) {
-        
 
         ArrayList<Medicion> listaMediciones = barometro.cargarDatosJsonEnArrayList();
         double presion1 = 0;
@@ -123,19 +121,19 @@ public class Barometro {
         double presionPenultima = 0;
         double presionRef = 0;
         String prediccion = null;
-        
-        ArrayList<Medicion> listaUltimas24h=null;
-        if(listaMediciones.size() >=24){
-        listaUltimas24h = new ArrayList<>(listaMediciones
-                .subList(listaMediciones.size() - 24, listaMediciones.size()));
-        
-        prediccion = "advertencia";
-        int ultimo = listaUltimas24h.size() - 1;
-        presion1 = listaUltimas24h.get(0).getPresion()
-                - (listaUltimas24h.get(ultimo).getPresion());
-        presionUltima = listaUltimas24h.get(ultimo).getPresion();
-        presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();
-        presionRef = listaUltimas24h.get(ultimo).getPresionRef();
+
+        ArrayList<Medicion> listaUltimas24h = null;
+        if (listaMediciones.size() >= 24) {
+            listaUltimas24h = new ArrayList<>(listaMediciones
+                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
+
+            prediccion = "advertencia";
+            int ultimo = listaUltimas24h.size() - 1;
+            presion1 = listaUltimas24h.get(0).getPresion()
+                    - (listaUltimas24h.get(ultimo).getPresion());
+            presionUltima = listaUltimas24h.get(ultimo).getPresion();
+            presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();
+            presionRef = listaUltimas24h.get(ultimo).getPresionRef();
         }
         //Para calcular si sube la presión lentamente comparo una presion con la
         // anterior en las últimas 24h y si es superior o igual todas las comprobaciones
@@ -143,31 +141,31 @@ public class Barometro {
         //subeLento a true
         int contador = 0;
         boolean subeLento = false;
-        if(barometro.getListaParametros() != null){
-        for (int i = 0; i < listaUltimas24h.size(); i++) {
+        if (barometro.getListaParametros() != null) {
+            for (int i = 0; i < listaUltimas24h.size(); i++) {
 
-            if (listaUltimas24h.get(i).getPresion() >= listaUltimas24h.get(i).getPresion()) {
-                contador++;
+                if (listaUltimas24h.get(i).getPresion() >= listaUltimas24h.get(i).getPresion()) {
+                    contador++;
+                }
+            }
+
+            if (contador == 24) {
+                subeLento = true;
+            }
+
+            if (presionUltima > presionRef && (presion1 - presionUltima) > 6) {
+                prediccion = "sol";
+            } else if (presionUltima < presionPenultima - 1) {
+                prediccion = "tormenta";
+            } else if ((presionUltima > presionPenultima + 1)) {
+                prediccion = "nubeSol";
+            } else if (subeLento) {
+                prediccion = "sol";
+            } else {
+                prediccion = "advertencia";
             }
         }
 
-        if (contador == 24) {
-            subeLento = true;
-        }
-
-       if (presionUltima > presionRef && (presion1 - presionUltima) > 6) {
-             prediccion = "sol";
-        } else if (presionUltima < presionPenultima - 1) {
-            prediccion = "tormenta";  
-        } else if ((presionUltima > presionPenultima + 1)) {
-            prediccion = "nubeSol";
-        } else if (subeLento) {
-            prediccion = "sol";  
-        } else {
-            prediccion = "advertencia";  
-        }
-        }
-        
         /*
         si presión baja 6mm en 24h && presionUltima < presionUltima ref borrasca lejos (sol)
         else desciende 1mm en 1h borrasca profunda 
@@ -188,8 +186,6 @@ public class Barometro {
         presionRef.setText(pres + "");
     }
 
-   
-
     //Método para leer los datos guardados en el .txt y llevarlos a un ArrayList
     //para poder trabajar con él
     public ArrayList<Medicion> cargarDatosJsonEnArrayList() {
@@ -201,13 +197,13 @@ public class Barometro {
             Object obj = parser.parse(new FileReader(localizacion));
 
             JSONObject jsonObject = (JSONObject) obj;
-
-            JSONArray listaMediciones = (JSONArray) jsonObject.get("listadatos");
+            JSONArray listaMediciones = (JSONArray) jsonObject.get("listaParametros");
 
             for (int i = 0; i < listaMediciones.size(); i++) {
                 Medicion medicion = new Medicion();
                 JSONObject jsonObject1 = (JSONObject) listaMediciones.get(i);
                 String date = jsonObject1.getAsString("fecha");
+
                 String[] arrSplit = date.split(",");
                 String year = arrSplit[1];
                 String[] arrSplit2 = year.split(":");
@@ -219,7 +215,7 @@ public class Barometro {
                 String[] arrSplit4 = day.split(":");
                 String[] arrSplit5 = arrSplit4[1].split("}");
                 int dia = Integer.parseInt(arrSplit5[0]);
-                LocalDate fecha = LocalDate.of(anyo, mes, dia);
+                GregorianCalendar fecha = new GregorianCalendar(anyo, mes, dia);
                 medicion.setFecha(fecha);
 
                 int hora = Integer.parseInt(jsonObject1.getAsString("hora"));
@@ -234,15 +230,15 @@ public class Barometro {
                 medicion.setAltitud(altitud);
                 double presionRef = Double.parseDouble(jsonObject1.getAsString("presionRef"));
                 medicion.setPresionRef(presionRef);
-                
+
                 lista.add(medicion);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return lista;
-        
+
     }
 }

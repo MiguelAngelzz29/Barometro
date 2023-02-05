@@ -2,7 +2,7 @@
 .boton {
   -fx-align-items: center;
   -fx-appearance: button;
-  -fx-background-color: #0276FF;
+  -fx-background-color: #00293C;
   -fx-border-radius: 8px;
   -fx-border-style: none;
   -fx-box-shadow: rgba(255, 255, 255, 0.26) 0 1px 2px inset;
@@ -27,22 +27,29 @@
 }
 
 .boton:active {
-  -fx-background-color: #006AE8;
+  -fx-background-color: #004779;
   -fx-text-fill: white;
 }
 
 .boton:hover {
-  -fx-background-color: #1C84FF;
+  -fx-background-color: #004779;
   -fx-text-fill: white;
 }
 
 .background {
-    -fx-background-color: #c1eff3;
+    -fx-background-color: #1E656D;
+         
 }
 .label
 {
--fx-text-fill: black;
--fx-text-alignment: center;
+   -fx-font-size: 13px;
+   -fx-font-weight: bold;
+   -fx-text-fill: #00293C;
+   -fx-background-color: transparent;
+   -fx-padding: 10px;
+   -fx-border-radius: 10px;
+   
+
 }
 
 .botonSalir {
@@ -70,6 +77,8 @@
   -fx-user-select: none;
   -fx--webkit-user-select: none;
   -fx-touch-action: manipulation;
+  -fx-width: 100px;
+-fx-height: 40px;
 }
 
 .botonIdioma{
@@ -80,5 +89,22 @@
   -fx-faint-focus-color: transparent;
 }
     
+.text-field {
+   -fx-background-color: #F1F3CE;
+   -fx-font-size: 14px;
+   -fx-text-fill: #000000;
+   -fx-padding: 10px;
+}
+
+.campo {
+   -fx-background-color: #F1F3CE;
+   -fx-font-size: 14px;
+   -fx-text-fill: #000000;
+   -fx-padding: 10px;
+}
+.spinne {
+-fx-background-color: #F1F3CE;
+}
+
     
     
