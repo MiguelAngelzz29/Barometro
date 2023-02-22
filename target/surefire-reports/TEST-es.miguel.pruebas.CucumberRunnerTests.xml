@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="5" failures="0" name="es.miguel.pruebas.CucumberRunnerTests" time="1.439" errors="0" skipped="0">
+<testsuite tests="5" failures="0" name="es.miguel.pruebas.CucumberRunnerTests" time="1.416" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="13.0.2+8"/>
@@ -60,9 +60,9 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="Medir la presión para determinar el tiempo" name="Calcular tiempo meteorológico" time="1.386"/>
+  <testcase classname="Medir la presión para determinar el tiempo" name="Calcular tiempo meteorológico" time="1.36"/>
   <testcase classname="Medir la presión para determinar el tiempo" name="Determinar día soleado" time="0.014"/>
-  <testcase classname="Medir la presión para determinar el tiempo" name="Determinar día de tormenta" time="0.012"/>
-  <testcase classname="Medir la presión para determinar el tiempo" name="Determinar día con intervalos nubosos" time="0.013"/>
-  <testcase classname="Medir la presión para determinar el tiempo" name="Deternminar si la presión sube lentamente durante 24h" time="0.014"/>
+  <testcase classname="Medir la presión para determinar el tiempo" name="Determinar día de tormenta" time="0.014"/>
+  <testcase classname="Medir la presión para determinar el tiempo" name="Determinar día con intervalos nubosos" time="0.016"/>
+  <testcase classname="Medir la presión para determinar el tiempo" name="Deternminar si la presión sube lentamente durante 24h" time="0.012"/>
 </testsuite>

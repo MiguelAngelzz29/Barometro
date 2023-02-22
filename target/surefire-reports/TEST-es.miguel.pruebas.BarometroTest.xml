@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="5" failures="0" name="es.miguel.pruebas.BarometroTest" time="0.413" errors="0" skipped="0">
+<testsuite tests="5" failures="0" name="es.miguel.pruebas.BarometroTest" time="0.055" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="13.0.2+8"/>
@@ -59,9 +59,9 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_1" time="0.338"/>
-  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_2" time="0.042"/>
-  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_3" time="0"/>
-  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_4" time="0.024"/>
-  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_5" time="0.009"/>
+  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_1" time="0.008"/>
+  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_2" time="0.011"/>
+  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_3" time="0.026"/>
+  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_4" time="0.004"/>
+  <testcase classname="es.miguel.pruebas.BarometroTest" name="testCalcular_5" time="0.006"/>
 </testsuite>

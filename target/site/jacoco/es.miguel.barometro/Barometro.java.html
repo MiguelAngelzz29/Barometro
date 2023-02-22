@@ -45,12 +45,12 @@ public class Barometro {
 <span class="nc" id="L45">    }</span>
 
     public ArrayList&lt;Medicion&gt; getListaParametros() {
-<span class="nc" id="L48">        return listaParametros;</span>
+<span class="fc" id="L48">        return listaParametros;</span>
     }
 
     public void setListaParametros(ArrayList&lt;Medicion&gt; listaParametros) {
-<span class="nc" id="L52">        this.listaParametros = listaParametros;</span>
-<span class="nc" id="L53">    }</span>
+<span class="fc" id="L52">        this.listaParametros = listaParametros;</span>
+<span class="fc" id="L53">    }</span>
 
     public ArrayList&lt;Medicion&gt; cargarDatosJsonEnArrayList() {
 <span class="fc" id="L56">        ArrayList&lt;Medicion&gt; lista = new ArrayList&lt;&gt;();</span>
@@ -173,35 +173,35 @@ public class Barometro {
 
     public double presionReferencia() {
 
-<span class="nc" id="L176">        double presionRef = 0;</span>
+<span class="fc" id="L176">        double presionRef = 0;</span>
 
-<span class="nc" id="L178">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
-<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
-<span class="nc" id="L180">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
-<span class="nc" id="L181">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+<span class="fc" id="L178">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="fc" id="L180">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="fc" id="L181">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
 
-<span class="nc" id="L183">            int ultimo = listaUltimas24h.size() - 1;</span>
-<span class="nc" id="L184">            presionRef = listaUltimas24h.get(ultimo).getPresionRef();</span>
+<span class="fc" id="L183">            int ultimo = listaUltimas24h.size() - 1;</span>
+<span class="fc" id="L184">            presionRef = listaUltimas24h.get(ultimo).getPresionRef();</span>
         }
-<span class="nc" id="L186">        return presionRef;</span>
+<span class="fc" id="L186">        return presionRef;</span>
     }
 
     public double ultimaPresion() {
 
-<span class="nc" id="L191">        double presionUltima = 0;</span>
+<span class="fc" id="L191">        double presionUltima = 0;</span>
 
-<span class="nc" id="L193">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
-<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
-<span class="nc" id="L195">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
-<span class="nc" id="L196">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+<span class="fc" id="L193">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="pc bpc" id="L194" title="1 of 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="fc" id="L195">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="fc" id="L196">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
 
-<span class="nc" id="L198">            int ultimo = listaUltimas24h.size() - 1;</span>
+<span class="fc" id="L198">            int ultimo = listaUltimas24h.size() - 1;</span>
 
-<span class="nc" id="L200">            presionUltima = listaUltimas24h.get(ultimo).getPresion();</span>
+<span class="fc" id="L200">            presionUltima = listaUltimas24h.get(ultimo).getPresion();</span>
 
         }
 
-<span class="nc" id="L204">        return presionUltima;</span>
+<span class="fc" id="L204">        return presionUltima;</span>
     }
 
 //    public double ultimaPresion() {
@@ -224,20 +224,20 @@ public class Barometro {
 //    }
     public double penultimaPresion() {
 
-<span class="nc" id="L227">        double presion1 = 0;</span>
-<span class="nc" id="L228">        double presionPenultima = 0;</span>
+<span class="fc" id="L227">        double presion1 = 0;</span>
+<span class="fc" id="L228">        double presionPenultima = 0;</span>
 
-<span class="nc" id="L230">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
-<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
-<span class="nc" id="L232">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
-<span class="nc" id="L233">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+<span class="fc" id="L230">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="pc bpc" id="L231" title="1 of 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="fc" id="L232">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="fc" id="L233">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
 
-<span class="nc" id="L235">            int ultimo = listaUltimas24h.size() - 1;</span>
+<span class="fc" id="L235">            int ultimo = listaUltimas24h.size() - 1;</span>
 
-<span class="nc" id="L237">            presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();</span>
+<span class="fc" id="L237">            presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();</span>
 
         }
-<span class="nc" id="L240">        return presionPenultima;</span>
+<span class="fc" id="L240">        return presionPenultima;</span>
 
     }
 
@@ -285,16 +285,16 @@ public class Barometro {
 
     public boolean subeLento() {
 
-<span class="nc" id="L288">        boolean subeLento = false;</span>
-<span class="nc" id="L289">        int contador = 0;</span>
+<span class="fc" id="L288">        boolean subeLento = false;</span>
+<span class="fc" id="L289">        int contador = 0;</span>
 
-<span class="nc" id="L291">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
-<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
-<span class="nc" id="L293">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
-<span class="nc" id="L294">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+<span class="fc" id="L291">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="pc bpc" id="L292" title="1 of 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="fc" id="L293">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="fc" id="L294">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
         }
 
-<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (this.getListaParametros() != null) {</span>
+<span class="pc bpc" id="L297" title="1 of 2 branches missed.">        if (this.getListaParametros() != null) {</span>
 <span class="nc bnc" id="L298" title="All 2 branches missed.">            for (int i = 0; i &lt; listaUltimas24h.size(); i++) {</span>
 
 <span class="nc bnc" id="L300" title="All 2 branches missed.">                if (listaUltimas24h.get(i).getPresion() &gt;= listaUltimas24h.get(i).getPresion()) {</span>
@@ -303,29 +303,29 @@ public class Barometro {
             }
         }
 
-<span class="nc bnc" id="L306" title="All 2 branches missed.">        if (contador == 24) {</span>
+<span class="pc bpc" id="L306" title="1 of 2 branches missed.">        if (contador == 24) {</span>
 <span class="nc" id="L307">            subeLento = true;</span>
         }
 
-<span class="nc" id="L310">        return subeLento;</span>
+<span class="fc" id="L310">        return subeLento;</span>
     }
 
     public double presion() {
 
-<span class="nc" id="L315">        double presion = 0;</span>
+<span class="fc" id="L315">        double presion = 0;</span>
 
-<span class="nc" id="L317">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
-<span class="nc bnc" id="L318" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
-<span class="nc" id="L319">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
-<span class="nc" id="L320">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+<span class="fc" id="L317">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="pc bpc" id="L318" title="1 of 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="fc" id="L319">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="fc" id="L320">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
 
-<span class="nc" id="L322">            int ultimo = listaUltimas24h.size() - 1;</span>
-<span class="nc" id="L323">            presion = listaUltimas24h.get(0).getPresion()</span>
-<span class="nc" id="L324">                    - (listaUltimas24h.get(ultimo).getPresion());</span>
+<span class="fc" id="L322">            int ultimo = listaUltimas24h.size() - 1;</span>
+<span class="fc" id="L323">            presion = listaUltimas24h.get(0).getPresion()</span>
+<span class="fc" id="L324">                    - (listaUltimas24h.get(ultimo).getPresion());</span>
 
         }
 
-<span class="nc" id="L328">        return presion;</span>
+<span class="fc" id="L328">        return presion;</span>
 
     }
 
@@ -333,10 +333,10 @@ public class Barometro {
         // presión a 0m = 1013hPa
         // 1hPa = 1mbar
         // 1hPa = 0.750mmHg
-<span class="nc" id="L336">        double alt = Double.parseDouble(altura.getText().toString());</span>
-<span class="nc" id="L337">        double pres = 1013 - (alt * 0.09);</span>
-<span class="nc" id="L338">        presionRef.setText(pres + &quot;&quot;);</span>
-<span class="nc" id="L339">    }</span>
+<span class="fc" id="L336">        double alt = Double.parseDouble(altura.getText().toString());</span>
+<span class="fc" id="L337">        double pres = 1013 - (alt * 0.09);</span>
+<span class="fc" id="L338">        presionRef.setText(pres + &quot;&quot;);</span>
+<span class="fc" id="L339">    }</span>
 
     public ArrayList&lt;Medicion&gt; getListaMediciones() {
 <span class="fc" id="L342">        return listaMediciones;</span>
