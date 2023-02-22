@@ -5,10 +5,12 @@ import es.miguel.barometro.Barometro;
 import es.miguel.barometro.Medicion;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -47,7 +49,7 @@ import javafx.scene.control.ListCell;
 
 public class BarometroController implements Initializable {
 
-    private static Gson gson = new Gson();
+  private static Gson gson = new Gson();
     private static Barometro barometro = new Barometro();
     private static Medicion medicion = new Medicion();
 
@@ -123,18 +125,94 @@ public class BarometroController implements Initializable {
     private Task task;
     private String idioma;
     private String pais;
-    private Stage stage;
+    private Stage stage; 
+    private double ultimaPresion;
+    private double presionRef;
+    private double presion;
+    private double penultimaPresion;
+    private boolean subeLento;
+    
+    
+private static final String  localizacion = "src/main/resources/es/miguel/registros/idioma.txt";
+
+private void guardarIdioma() {
+    try {
+        FileWriter escribirRegistros;
+        escribirRegistros = new FileWriter(new File(getClass().getClassLoader().getResource(localizacion).getFile()));
+        BufferedWriter bufferWriter = new BufferedWriter(escribirRegistros);
+        bufferWriter.write("");
+        bufferWriter.write(locale.toString());
+        bufferWriter.close();
+    } catch (Exception e) {
+        System.out.println("Error al guardar datos en " + localizacion);
+        System.out.println(e.getMessage());
+    }
+}
+
+/*private void cargarIdioma() {
+    try {
+        String cadena = "";
+        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(localizacion)));
+        String linea;
+
+        while ((linea = br.readLine()) != null) {
+            cadena += linea;
+        }
+
+        String[] cadena2 = cadena.split("_");
+        idioma = cadena2[0];
+        pais = cadena2[1];
+
+        br.close();
+    } catch (FileNotFoundException ex) {
+        ex.printStackTrace();
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
+}*/
+   private void cargarIdioma() {
+        String localizacion = "src/main/resources/es/miguel/registros/idioma.txt";
+        String cadena = "";
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(localizacion));
+            String linea;
+
+            while ((linea = br.readLine()) != null) {
+                cadena += linea;
+            }
+
+            String[] cadena2 = cadena.split("_");
+            idioma = cadena2[0];
+            pais = cadena2[1];
+
+            br.close();
+
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
+        
         cargarIdioma();
         locale = new Locale(idioma, pais);
         bundle = ResourceBundle.getBundle("es.miguel.idiomas.idioma", locale);
+        
+        ultimaPresion = barometro.ultimaPresion();
+        presionRef = barometro.presionReferencia();
+        presion = barometro.presion();
+        penultimaPresion = barometro.penultimaPresion();
+        subeLento = barometro.subeLento();
+        
+        
+        
         cargarImagenesBotones();
         internalizacion(bundle);
         validarTextFields();
-
         SpinnerValueFactory<String> valueFactory
                 = new SpinnerValueFactory.ListSpinnerValueFactory<String>(horas);
         valueFactory.setValue("12:00");
@@ -143,7 +221,7 @@ public class BarometroController implements Initializable {
         barometro.cargarDatosJsonEnArrayList();
         barometro.setListaParametros(listaDatos);
         txtPresionRef.setEditable(false);
-        mostrarImagen(barometro.calcular(barometro));
+        mostrarImagen(barometro.calcular(ultimaPresion,presionRef,presion,penultimaPresion,subeLento));
         barometro.calcularPresionConAltura(txtAltitud, txtPresionRef, listaDatos);
 
     }
@@ -199,7 +277,7 @@ public class BarometroController implements Initializable {
         }
         System.out.println(listaDatos);
 
-        barometro.calcular(barometro);
+        barometro.calcular(ultimaPresion,presionRef,presion,penultimaPresion,subeLento);
         barometro.setIdBarometro(1);
         barometro.setListaParametros(listaDatos);
         barometro.escribirDatos(gson.toJson(barometro));
@@ -276,7 +354,7 @@ public class BarometroController implements Initializable {
             }
         });
         listView.setItems(listaObservable);
-        barometro.calcular(barometro);
+        barometro.calcular(ultimaPresion,presionRef,presion,penultimaPresion,subeLento);
 
     }
 
@@ -390,47 +468,7 @@ public class BarometroController implements Initializable {
 
     }
 
-    private void guardarIdioma() {
-        String localizacion = "src/main/resources/es/miguel/registros/idioma.txt";
-        try {
 
-            FileWriter escribirRegistros;
-            escribirRegistros = new FileWriter(localizacion);
-
-            BufferedWriter bufferWriter = new BufferedWriter(escribirRegistros);
-            bufferWriter.write("");
-            bufferWriter.write(locale.toString());
-            bufferWriter.close();
-
-        } catch (Exception e) {
-            System.out.println("Error al guardar datos en " + localizacion);
-            System.out.println(e.getMessage());
-        }
-    }
-
-    private void cargarIdioma() {
-        String localizacion = "src/main/resources/es/miguel/registros/idioma.txt";
-        String cadena = "";
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(localizacion));
-            String linea;
-
-            while ((linea = br.readLine()) != null) {
-                cadena += linea;
-            }
-
-            String[] cadena2 = cadena.split("_");
-            idioma = cadena2[0];
-            pais = cadena2[1];
-
-            br.close();
-
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
 
     private void cargarBarraProgreso() {
 
@@ -464,5 +502,15 @@ public class BarometroController implements Initializable {
         Image banderaFr = new Image(linkBanderaFr.toString(), 32, 32, false, true);
         btnFrances.setGraphic(new ImageView(banderaFr));
     }
+
+    public ImageView getImageViewIcono() {
+        return imageViewIcono;
+    }
+
+    public void setImageViewIcono(ImageView imageViewIcono) {
+        this.imageViewIcono = imageViewIcono;
+    }
+    
+    
 
 }

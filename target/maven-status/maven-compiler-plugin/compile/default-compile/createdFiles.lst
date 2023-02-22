@@ -1,8 +1,11 @@
 es\miguel\barometro\Barometro.class
 es\miguel\barometro\BarometroController$1.class
-es\miguel\barometro\Medicion.class
-es\miguel\barometro\ProgressBarController$1.class
+es\miguel\barometro\NewMain.class
 es\miguel\barometro\App.class
 es\miguel\barometro\BarometroController.class
 module-info.class
+.netbeans_automatic_build
+es\miguel\barometro\Medicion.class
+es\miguel\barometro\BarometroController$2.class
+es\miguel\barometro\ProgressBarController$1.class
 es\miguel\barometro\ProgressBarController.class

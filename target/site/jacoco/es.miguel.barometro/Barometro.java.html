@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Barometro.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barometro</a> &gt; <a href="index.source.html" class="el_package">es.miguel.barometro</a> &gt; <span class="el_source">Barometro.java</span></div><h1>Barometro.java</h1><pre class="source lang-java linenums">package es.miguel.barometro;
+
+import com.google.gson.Gson;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.GregorianCalendar;
+import javafx.scene.control.TextField;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+
+public class Barometro {
+
+    private static final String localizacion = &quot;/es/miguel/registros/registros.txt&quot;;
+
+    private int idBarometro;
+    private ArrayList&lt;Medicion&gt; listaParametros;
+<span class="pc" id="L26">    private ArrayList&lt;Medicion&gt; listaMediciones = this.cargarDatosJsonEnArrayList();</span>
+
+    ;
+    
+
+<span class="fc" id="L31">    public Barometro() {</span>
+<span class="fc" id="L32">    }</span>
+
+<span class="nc" id="L34">    public Barometro(int idBarometro, ArrayList&lt;Medicion&gt; listadatos) {</span>
+<span class="nc" id="L35">        this.idBarometro = idBarometro;</span>
+<span class="nc" id="L36">        this.listaParametros = listadatos;</span>
+<span class="nc" id="L37">    }</span>
+
+    public int getIdBarometro() {
+<span class="nc" id="L40">        return idBarometro;</span>
+    }
+
+    public void setIdBarometro(int idBarometro) {
+<span class="nc" id="L44">        this.idBarometro = idBarometro;</span>
+<span class="nc" id="L45">    }</span>
+
+    public ArrayList&lt;Medicion&gt; getListaParametros() {
+<span class="nc" id="L48">        return listaParametros;</span>
+    }
+
+    public void setListaParametros(ArrayList&lt;Medicion&gt; listaParametros) {
+<span class="nc" id="L52">        this.listaParametros = listaParametros;</span>
+<span class="nc" id="L53">    }</span>
+
+    public ArrayList&lt;Medicion&gt; cargarDatosJsonEnArrayList() {
+<span class="fc" id="L56">        ArrayList&lt;Medicion&gt; lista = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L57">        JSONParser parser = new JSONParser();</span>
+
+        try {
+            // cargar el archivo como un recurso en el classpath
+<span class="fc" id="L61">            InputStream is = getClass().getResourceAsStream(localizacion);</span>
+
+            //   leer el archivo utilizando un BufferedReader
+<span class="fc" id="L64">            BufferedReader br = new BufferedReader(new InputStreamReader(is));</span>
+
+<span class="fc" id="L66">            Object obj = parser.parse(br);</span>
+<span class="fc" id="L67">            JSONObject jsonObject = (JSONObject) obj;</span>
+<span class="fc" id="L68">            JSONArray listaMediciones = (JSONArray) jsonObject.get(&quot;listaParametros&quot;);</span>
+
+<span class="fc bfc" id="L70" title="All 2 branches covered.">            for (int i = 0; i &lt; listaMediciones.size(); i++) {</span>
+<span class="fc" id="L71">                Medicion medicion = new Medicion();</span>
+<span class="fc" id="L72">                JSONObject jsonObject1 = (JSONObject) listaMediciones.get(i);</span>
+<span class="fc" id="L73">                String date = jsonObject1.getAsString(&quot;fecha&quot;);</span>
+<span class="fc" id="L74">                String[] arrSplit = date.split(&quot;,&quot;);</span>
+<span class="fc" id="L75">                String year = arrSplit[1];</span>
+<span class="fc" id="L76">                String[] arrSplit2 = year.split(&quot;:&quot;);</span>
+<span class="fc" id="L77">                int anyo = Integer.parseInt(arrSplit2[1]);</span>
+<span class="fc" id="L78">                String month = arrSplit[0];</span>
+<span class="fc" id="L79">                String[] arrSplit3 = month.split(&quot;:&quot;);</span>
+<span class="fc" id="L80">                int mes = Integer.parseInt(arrSplit3[1]);</span>
+<span class="fc" id="L81">                String day = arrSplit[2];</span>
+<span class="fc" id="L82">                String[] arrSplit4 = day.split(&quot;:&quot;);</span>
+<span class="fc" id="L83">                String[] arrSplit5 = arrSplit4[1].split(&quot;}&quot;);</span>
+<span class="fc" id="L84">                int dia = Integer.parseInt(arrSplit5[0]);</span>
+<span class="fc" id="L85">                GregorianCalendar fecha = new GregorianCalendar(anyo, mes, dia);</span>
+<span class="fc" id="L86">                medicion.setFecha(fecha);</span>
+
+<span class="fc" id="L88">                int hora = Integer.parseInt(jsonObject1.getAsString(&quot;hora&quot;));</span>
+<span class="fc" id="L89">                medicion.setHora(hora);</span>
+<span class="fc" id="L90">                double temperatura = Double.parseDouble(jsonObject1.getAsString(&quot;temperatura&quot;));</span>
+<span class="fc" id="L91">                medicion.setTemperatura(temperatura);</span>
+<span class="fc" id="L92">                double velocidad = Double.parseDouble(jsonObject1.getAsString(&quot;velocidad&quot;));</span>
+<span class="fc" id="L93">                medicion.setVelocidad(velocidad);</span>
+<span class="fc" id="L94">                double presion = Double.parseDouble(jsonObject1.getAsString(&quot;presion&quot;));</span>
+<span class="fc" id="L95">                medicion.setPresion(presion);</span>
+<span class="fc" id="L96">                double altitud = Double.parseDouble(jsonObject1.getAsString(&quot;altitud&quot;));</span>
+<span class="fc" id="L97">                medicion.setAltitud(altitud);</span>
+<span class="fc" id="L98">                double presionRef = Double.parseDouble(jsonObject1.getAsString(&quot;presionRef&quot;));</span>
+<span class="fc" id="L99">                medicion.setPresionRef(presionRef);</span>
+
+<span class="fc" id="L101">                lista.add(medicion);</span>
+
+            }
+
+<span class="fc" id="L105">            br.close();</span>
+<span class="nc" id="L106">        } catch (Exception e) {</span>
+<span class="nc" id="L107">            e.printStackTrace();</span>
+<span class="fc" id="L108">        }</span>
+
+<span class="fc" id="L110">        return lista;</span>
+
+    }
+
+    public void escribirDatos(String misDatos) {
+        try {
+            // cargar el archivo como un recurso en el classpath
+<span class="nc" id="L117">            File barometroRegistro = new File(getClass().getResource(localizacion).toURI());</span>
+
+            //Comprobamos si el archivo indicado en la ruta existe.
+<span class="nc bnc" id="L120" title="All 2 branches missed.">            if (!barometroRegistro.exists()) {</span>
+<span class="nc" id="L121">                File directorio = new File(barometroRegistro.getParent());</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">                if (!directorio.exists()) {</span>
+                    // mkdirs() crea el directorio expecificado en la ruta si no existe  
+<span class="nc" id="L124">                    directorio.mkdirs();</span>
+                }
+
+                //createNewFile() crea un nuevo archivo vacío si no existe en la ruta expecificada
+<span class="nc" id="L128">                barometroRegistro.createNewFile();</span>
+            }
+<span class="nc" id="L130">        } catch (Exception e) {</span>
+<span class="nc" id="L131">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L132">        }</span>
+
+        try {
+            // cargar el archivo como un recurso en el classpath
+<span class="nc" id="L136">            FileWriter escribirRegistros = new FileWriter(getClass().getResource(localizacion).getFile());</span>
+
+<span class="nc" id="L138">            BufferedWriter bufferWriter = new BufferedWriter(escribirRegistros);</span>
+<span class="nc" id="L139">            bufferWriter.write(&quot;&quot;);</span>
+<span class="nc" id="L140">            bufferWriter.write(misDatos.toString());</span>
+<span class="nc" id="L141">            bufferWriter.close();</span>
+
+<span class="nc" id="L143">            System.out.println(&quot;Datos guardados en &quot; + localizacion);</span>
+<span class="nc" id="L144">        } catch (Exception e) {</span>
+<span class="nc" id="L145">            System.out.println(&quot;Error al guardar datos en &quot; + localizacion);</span>
+<span class="nc" id="L146">            System.out.println(e.getMessage());</span>
+<span class="nc" id="L147">        }</span>
+<span class="nc" id="L148">    }</span>
+
+    //Para calcular si sube la presión lentamente comparo una presion con la
+    // anterior en las últimas 24h y si es superior o igual todas las comprobaciones
+    // hago que un contador vaya sumando y si suma 24 (un día) paso el boolean 
+    //subeLento a true
+    public String calcular(double ultimaPresion, double presionRef, double presion,
+            double penultimaPresion, boolean subeLento) {
+
+<span class="fc" id="L157">        String prediccion = &quot;advertencia&quot;;</span>
+
+<span class="fc bfc" id="L159" title="All 4 branches covered.">        if (ultimaPresion &gt; presionRef &amp;&amp; (ultimaPresion - presion) &gt; 6) {</span>
+<span class="fc" id="L160">            prediccion = &quot;sol&quot;;</span>
+<span class="fc bfc" id="L161" title="All 2 branches covered.">        } else if (ultimaPresion &lt; penultimaPresion - 1) {</span>
+<span class="fc" id="L162">            prediccion = &quot;tormenta&quot;;</span>
+<span class="fc bfc" id="L163" title="All 2 branches covered.">        } else if ((ultimaPresion &gt; penultimaPresion + 1)) {</span>
+<span class="fc" id="L164">            prediccion = &quot;nubeSol&quot;;</span>
+<span class="fc bfc" id="L165" title="All 2 branches covered.">        } else if (subeLento) {</span>
+<span class="fc" id="L166">            prediccion = &quot;sol&quot;;</span>
+        } else {
+<span class="fc" id="L168">            prediccion = &quot;advertencia&quot;;</span>
+        }
+
+<span class="fc" id="L171">        return prediccion;</span>
+    }
+
+    public double presionReferencia() {
+
+<span class="nc" id="L176">        double presionRef = 0;</span>
+
+<span class="nc" id="L178">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="nc bnc" id="L179" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="nc" id="L180">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="nc" id="L181">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+
+<span class="nc" id="L183">            int ultimo = listaUltimas24h.size() - 1;</span>
+<span class="nc" id="L184">            presionRef = listaUltimas24h.get(ultimo).getPresionRef();</span>
+        }
+<span class="nc" id="L186">        return presionRef;</span>
+    }
+
+    public double ultimaPresion() {
+
+<span class="nc" id="L191">        double presionUltima = 0;</span>
+
+<span class="nc" id="L193">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="nc bnc" id="L194" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="nc" id="L195">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="nc" id="L196">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+
+<span class="nc" id="L198">            int ultimo = listaUltimas24h.size() - 1;</span>
+
+<span class="nc" id="L200">            presionUltima = listaUltimas24h.get(ultimo).getPresion();</span>
+
+        }
+
+<span class="nc" id="L204">        return presionUltima;</span>
+    }
+
+//    public double ultimaPresion() {
+//        
+//        ArrayList&lt;Medicion&gt; listaMediciones = this.cargarDatosJsonEnArrayList();
+//        double presionUltima = 0;
+//
+//        ArrayList&lt;Medicion&gt; listaUltimas24h = null;
+//        if (listaMediciones.size() &gt;= 24) {
+//            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones
+//                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
+//
+//            int ultimo = listaUltimas24h.size() - 1;
+//
+//            presionUltima = listaUltimas24h.get(ultimo).getPresion();
+//
+//        }
+//
+//        return presionUltima;
+//    }
+    public double penultimaPresion() {
+
+<span class="nc" id="L227">        double presion1 = 0;</span>
+<span class="nc" id="L228">        double presionPenultima = 0;</span>
+
+<span class="nc" id="L230">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="nc bnc" id="L231" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="nc" id="L232">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="nc" id="L233">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+
+<span class="nc" id="L235">            int ultimo = listaUltimas24h.size() - 1;</span>
+
+<span class="nc" id="L237">            presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();</span>
+
+        }
+<span class="nc" id="L240">        return presionPenultima;</span>
+
+    }
+
+    public boolean caso1() {
+<span class="nc bnc" id="L245" title="All 4 branches missed.">        if (ultimaPresionMayorPresionRef() &amp;&amp; presionMenosUltimaPresionMayor6()) {</span>
+<span class="nc" id="L246">            return true;</span>
+        }
+<span class="nc" id="L248">        return false;</span>
+    }
+
+    public boolean ultimaPresionMayorPresionRef() {
+<span class="nc bnc" id="L252" title="All 2 branches missed.">        if (ultimaPresion() &gt; presionReferencia()) {</span>
+<span class="nc" id="L253">            return true;</span>
+        }
+<span class="nc" id="L255">        return false;</span>
+    }
+
+    public boolean presionMenosUltimaPresionMayor6() {
+<span class="nc bnc" id="L259" title="All 2 branches missed.">        if ((presion() - ultimaPresion()) &gt; 6) {</span>
+<span class="nc" id="L260">            return true;</span>
+        }
+<span class="nc" id="L262">        return false;</span>
+    }
+
+    public boolean caso2() {
+<span class="nc bnc" id="L266" title="All 2 branches missed.">        if (ultimaPresion() &lt; penultimaPresion() - 1) {</span>
+<span class="nc" id="L267">            return true;</span>
+        }
+<span class="nc" id="L269">        return false;</span>
+    }
+
+    public boolean caso3() {
+<span class="nc bnc" id="L273" title="All 2 branches missed.">        if (ultimaPresion() &gt; penultimaPresion() + 1) {</span>
+<span class="nc" id="L274">            return true;</span>
+        }
+<span class="nc" id="L276">        return false;</span>
+    }
+
+    public boolean caso4() {
+<span class="nc bnc" id="L280" title="All 2 branches missed.">        if (subeLento()) {</span>
+<span class="nc" id="L281">            return true;</span>
+        }
+<span class="nc" id="L283">        return false;</span>
+    }
+
+    public boolean subeLento() {
+
+<span class="nc" id="L288">        boolean subeLento = false;</span>
+<span class="nc" id="L289">        int contador = 0;</span>
+
+<span class="nc" id="L291">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="nc bnc" id="L292" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="nc" id="L293">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="nc" id="L294">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+        }
+
+<span class="nc bnc" id="L297" title="All 2 branches missed.">        if (this.getListaParametros() != null) {</span>
+<span class="nc bnc" id="L298" title="All 2 branches missed.">            for (int i = 0; i &lt; listaUltimas24h.size(); i++) {</span>
+
+<span class="nc bnc" id="L300" title="All 2 branches missed.">                if (listaUltimas24h.get(i).getPresion() &gt;= listaUltimas24h.get(i).getPresion()) {</span>
+<span class="nc" id="L301">                    contador++;</span>
+                }
+            }
+        }
+
+<span class="nc bnc" id="L306" title="All 2 branches missed.">        if (contador == 24) {</span>
+<span class="nc" id="L307">            subeLento = true;</span>
+        }
+
+<span class="nc" id="L310">        return subeLento;</span>
+    }
+
+    public double presion() {
+
+<span class="nc" id="L315">        double presion = 0;</span>
+
+<span class="nc" id="L317">        ArrayList&lt;Medicion&gt; listaUltimas24h = null;</span>
+<span class="nc bnc" id="L318" title="All 2 branches missed.">        if (listaMediciones.size() &gt;= 24) {</span>
+<span class="nc" id="L319">            listaUltimas24h = new ArrayList&lt;&gt;(listaMediciones</span>
+<span class="nc" id="L320">                    .subList(listaMediciones.size() - 24, listaMediciones.size()));</span>
+
+<span class="nc" id="L322">            int ultimo = listaUltimas24h.size() - 1;</span>
+<span class="nc" id="L323">            presion = listaUltimas24h.get(0).getPresion()</span>
+<span class="nc" id="L324">                    - (listaUltimas24h.get(ultimo).getPresion());</span>
+
+        }
+
+<span class="nc" id="L328">        return presion;</span>
+
+    }
+
+    public void calcularPresionConAltura(TextField altura, TextField presionRef, ArrayList&lt;Medicion&gt; lista) {
+        // presión a 0m = 1013hPa
+        // 1hPa = 1mbar
+        // 1hPa = 0.750mmHg
+<span class="nc" id="L336">        double alt = Double.parseDouble(altura.getText().toString());</span>
+<span class="nc" id="L337">        double pres = 1013 - (alt * 0.09);</span>
+<span class="nc" id="L338">        presionRef.setText(pres + &quot;&quot;);</span>
+<span class="nc" id="L339">    }</span>
+
+    public ArrayList&lt;Medicion&gt; getListaMediciones() {
+<span class="fc" id="L342">        return listaMediciones;</span>
+    }
+
+    public void setListaMediciones(ArrayList&lt;Medicion&gt; listaMediciones) {
+<span class="nc" id="L346">        this.listaMediciones = listaMediciones;</span>
+<span class="nc" id="L347">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

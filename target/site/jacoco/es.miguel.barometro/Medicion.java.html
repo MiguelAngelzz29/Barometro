@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Medicion.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barometro</a> &gt; <a href="index.source.html" class="el_package">es.miguel.barometro</a> &gt; <span class="el_source">Medicion.java</span></div><h1>Medicion.java</h1><pre class="source lang-java linenums">package es.miguel.barometro;
+
+import java.util.GregorianCalendar;
+
+public class Medicion {
+
+    private double temperatura;
+    private double presion;
+    private double presionRef;
+    private double velocidad;
+    private GregorianCalendar fecha;
+    private int hora;
+    private double altitud;
+
+<span class="fc" id="L15">    public Medicion() {</span>
+<span class="fc" id="L16">    }</span>
+
+<span class="nc" id="L18">    public Medicion(double temperatura, double presion, double presionRef, double velocidad, GregorianCalendar fecha, int hora, double altitud) {</span>
+<span class="nc" id="L19">        this.temperatura = temperatura;</span>
+<span class="nc" id="L20">        this.presion = presion;</span>
+<span class="nc" id="L21">        this.presionRef = presionRef;</span>
+<span class="nc" id="L22">        this.velocidad = velocidad;</span>
+<span class="nc" id="L23">        this.fecha = fecha;</span>
+<span class="nc" id="L24">        this.hora = hora;</span>
+<span class="nc" id="L25">        this.altitud = altitud;</span>
+<span class="nc" id="L26">    }</span>
+
+    public double getTemperatura() {
+<span class="nc" id="L29">        return temperatura;</span>
+    }
+
+    public void setTemperatura(double temperatura) {
+<span class="fc" id="L33">        this.temperatura = temperatura;</span>
+<span class="fc" id="L34">    }</span>
+
+    public double getPresion() {
+<span class="fc" id="L37">        return presion;</span>
+    }
+
+    public void setPresion(double presion) {
+<span class="fc" id="L41">        this.presion = presion;</span>
+<span class="fc" id="L42">    }</span>
+
+    public double getVelocidad() {
+<span class="nc" id="L45">        return velocidad;</span>
+    }
+
+    public void setVelocidad(double velocidad) {
+<span class="fc" id="L49">        this.velocidad = velocidad;</span>
+<span class="fc" id="L50">    }</span>
+
+    public GregorianCalendar getFecha() {
+<span class="nc" id="L53">        return fecha;</span>
+    }
+
+    public void setFecha(GregorianCalendar fecha) {
+<span class="fc" id="L57">        this.fecha = fecha;</span>
+<span class="fc" id="L58">    }</span>
+
+    public double getAltitud() {
+<span class="nc" id="L61">        return altitud;</span>
+    }
+
+    public void setAltitud(double altitud) {
+<span class="fc" id="L65">        this.altitud = altitud;</span>
+<span class="fc" id="L66">    }</span>
+
+    public int getHora() {
+<span class="nc" id="L69">        return hora;</span>
+    }
+
+    public void setHora(int hora) {
+<span class="fc" id="L73">        this.hora = hora;</span>
+<span class="fc" id="L74">    }</span>
+
+    public double getPresionRef() {
+<span class="fc" id="L77">        return presionRef;</span>
+    }
+
+    public void setPresionRef(double presionRef) {
+<span class="fc" id="L81">        this.presionRef = presionRef;</span>
+<span class="fc" id="L82">    }</span>
+
+    @Override
+    public String toString() {
+<span class="nc" id="L86">        return &quot;Fecha: &quot; + fecha + &quot; Hora: &quot; + hora + &quot;:00&quot; + &quot; Temperatura: &quot; + temperatura + &quot; ºC &quot;</span>
+                + &quot; Presión: &quot; + presion + &quot; hPa&quot; + &quot; Velocidad viento &quot;
+                + velocidad + &quot; Altitud: &quot; + altitud;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

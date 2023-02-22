@@ -28,8 +28,8 @@ public class ProgressBarController implements Initializable {
         stage = new Stage();
         task = createWorker();
 
-        idProgressBar.progressProperty().bind(task.progressProperty());
-        lbProgressBar.textProperty().bind(task.messageProperty());
+      // idProgressBar.progressProperty().bind(task.progressProperty());
+      //  lbProgressBar.textProperty().bind(task.messageProperty());
 
         new Thread(task).start();
     }

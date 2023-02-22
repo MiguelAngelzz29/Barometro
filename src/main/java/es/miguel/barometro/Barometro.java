@@ -8,6 +8,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import javafx.scene.control.TextField;
@@ -17,9 +19,14 @@ import net.minidev.json.parser.JSONParser;
 
 public class Barometro {
 
-    private static final String localizacion = "src/main/resources/es/miguel/registros/registros.txt";
+    private static final String localizacion = "/es/miguel/registros/registros.txt";
+
     private int idBarometro;
     private ArrayList<Medicion> listaParametros;
+    private ArrayList<Medicion> listaMediciones = this.cargarDatosJsonEnArrayList();
+
+    ;
+    
 
     public Barometro() {
     }
@@ -45,157 +52,18 @@ public class Barometro {
         this.listaParametros = listaParametros;
     }
 
-    // método para escribir datos 
-    public void escribirDatos(String misDatos) {
-
-        File barometroRegistro = new File(localizacion);
-
-        //Comprobamos si el archivo indicado en la ruta existe.
-        if (!barometroRegistro.exists()) {
-
-            try {
-
-                File directorio = new File(barometroRegistro.getParent());
-                if (!directorio.exists()) {
-                    // mkdirs() crea el directorio expecificado en la ruta si no existe  
-                    directorio.mkdirs();
-                }
-
-                //createNewFile() crea un nuevo archivo vacío si no existe en la ruta expecificada
-                barometroRegistro.createNewFile();
-
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-            }
-        }
-
-        try {
-
-            FileWriter escribirRegistros;
-            escribirRegistros = new FileWriter(localizacion);
-
-            BufferedWriter bufferWriter = new BufferedWriter(escribirRegistros);
-            bufferWriter.write("");
-            bufferWriter.write(misDatos.toString());
-            bufferWriter.close();
-
-            System.out.println("Datos guardados en " + localizacion);
-
-        } catch (Exception e) {
-            System.out.println("Error al guardar datos en " + localizacion);
-            System.out.println(e.getMessage());
-        }
-    }
-
-    // método para leer registros desde un .txt con datos JSON
-    public void leerRegistros() {
-
-        Barometro barometro;
-        Gson gson = new Gson();
-        String json = "";
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(localizacion));
-            String linea;
-
-            while ((linea = br.readLine()) != null) {
-                json += linea;
-
-                barometro = gson.fromJson(json, Barometro.class);
-            }
-
-            br.close();
-
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-    }
-
-    public String calcular(Barometro barometro) {
-
-        ArrayList<Medicion> listaMediciones = barometro.cargarDatosJsonEnArrayList();
-        double presion1 = 0;
-        double presionUltima = 0;
-        double presionPenultima = 0;
-        double presionRef = 0;
-        String prediccion = null;
-
-        ArrayList<Medicion> listaUltimas24h = null;
-        if (listaMediciones.size() >= 24) {
-            listaUltimas24h = new ArrayList<>(listaMediciones
-                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
-
-            prediccion = "advertencia";
-            int ultimo = listaUltimas24h.size() - 1;
-            presion1 = listaUltimas24h.get(0).getPresion()
-                    - (listaUltimas24h.get(ultimo).getPresion());
-            presionUltima = listaUltimas24h.get(ultimo).getPresion();
-            presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();
-            presionRef = listaUltimas24h.get(ultimo).getPresionRef();
-        }
-        //Para calcular si sube la presión lentamente comparo una presion con la
-        // anterior en las últimas 24h y si es superior o igual todas las comprobaciones
-        // hago que un contador vaya sumando y si suma 24 (un día) paso el boolean 
-        //subeLento a true
-        int contador = 0;
-        boolean subeLento = false;
-        if (barometro.getListaParametros() != null) {
-            for (int i = 0; i < listaUltimas24h.size(); i++) {
-
-                if (listaUltimas24h.get(i).getPresion() >= listaUltimas24h.get(i).getPresion()) {
-                    contador++;
-                }
-            }
-
-            if (contador == 24) {
-                subeLento = true;
-            }
-
-            if (presionUltima > presionRef && (presion1 - presionUltima) > 6) {
-                prediccion = "sol";
-            } else if (presionUltima < presionPenultima - 1) {
-                prediccion = "tormenta";
-            } else if ((presionUltima > presionPenultima + 1)) {
-                prediccion = "nubeSol";
-            } else if (subeLento) {
-                prediccion = "sol";
-            } else {
-                prediccion = "advertencia";
-            }
-        }
-
-        /*
-        si presión baja 6mm en 24h && presionUltima < presionUltima ref borrasca lejos (sol)
-        else desciende 1mm en 1h borrasca profunda 
-        else si sube bruscamente 1mm en 1h anticiclón temporal entre borrasca
-        else si sube lento sol
-        
-        
-         */
-        return prediccion;
-    }
-
-    public void calcularPresionConAltura(TextField altura, TextField presionRef, ArrayList<Medicion> lista) {
-        // presión a 0m = 1013hPa
-        // 1hPa = 1mbar
-        // 1hPa = 0.750mmHg
-        double alt = Double.parseDouble(altura.getText().toString());
-        double pres = 1013 - (alt * 0.09);
-        presionRef.setText(pres + "");
-    }
-
-    //Método para leer los datos guardados en el .txt y llevarlos a un ArrayList
-    //para poder trabajar con él
     public ArrayList<Medicion> cargarDatosJsonEnArrayList() {
-        ArrayList<Medicion> lista = new ArrayList();
+        ArrayList<Medicion> lista = new ArrayList<>();
         JSONParser parser = new JSONParser();
 
         try {
+            // cargar el archivo como un recurso en el classpath
+            InputStream is = getClass().getResourceAsStream(localizacion);
 
-            Object obj = parser.parse(new FileReader(localizacion));
+            //   leer el archivo utilizando un BufferedReader
+            BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
+            Object obj = parser.parse(br);
             JSONObject jsonObject = (JSONObject) obj;
             JSONArray listaMediciones = (JSONArray) jsonObject.get("listaParametros");
 
@@ -203,7 +71,6 @@ public class Barometro {
                 Medicion medicion = new Medicion();
                 JSONObject jsonObject1 = (JSONObject) listaMediciones.get(i);
                 String date = jsonObject1.getAsString("fecha");
-
                 String[] arrSplit = date.split(",");
                 String year = arrSplit[1];
                 String[] arrSplit2 = year.split(":");
@@ -232,8 +99,10 @@ public class Barometro {
                 medicion.setPresionRef(presionRef);
 
                 lista.add(medicion);
+
             }
 
+            br.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -241,4 +110,240 @@ public class Barometro {
         return lista;
 
     }
+
+    public void escribirDatos(String misDatos) {
+        try {
+            // cargar el archivo como un recurso en el classpath
+            File barometroRegistro = new File(getClass().getResource(localizacion).toURI());
+
+            //Comprobamos si el archivo indicado en la ruta existe.
+            if (!barometroRegistro.exists()) {
+                File directorio = new File(barometroRegistro.getParent());
+                if (!directorio.exists()) {
+                    // mkdirs() crea el directorio expecificado en la ruta si no existe  
+                    directorio.mkdirs();
+                }
+
+                //createNewFile() crea un nuevo archivo vacío si no existe en la ruta expecificada
+                barometroRegistro.createNewFile();
+            }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+
+        try {
+            // cargar el archivo como un recurso en el classpath
+            FileWriter escribirRegistros = new FileWriter(getClass().getResource(localizacion).getFile());
+
+            BufferedWriter bufferWriter = new BufferedWriter(escribirRegistros);
+            bufferWriter.write("");
+            bufferWriter.write(misDatos.toString());
+            bufferWriter.close();
+
+            System.out.println("Datos guardados en " + localizacion);
+        } catch (Exception e) {
+            System.out.println("Error al guardar datos en " + localizacion);
+            System.out.println(e.getMessage());
+        }
+    }
+
+    //Para calcular si sube la presión lentamente comparo una presion con la
+    // anterior en las últimas 24h y si es superior o igual todas las comprobaciones
+    // hago que un contador vaya sumando y si suma 24 (un día) paso el boolean 
+    //subeLento a true
+    public String calcular(double ultimaPresion, double presionRef, double presion,
+            double penultimaPresion, boolean subeLento) {
+
+        String prediccion = "advertencia";
+
+        if (ultimaPresion > presionRef && (ultimaPresion - presion) > 6) {
+            prediccion = "sol";
+        } else if (ultimaPresion < penultimaPresion - 1) {
+            prediccion = "tormenta";
+        } else if ((ultimaPresion > penultimaPresion + 1)) {
+            prediccion = "nubeSol";
+        } else if (subeLento) {
+            prediccion = "sol";
+        } else {
+            prediccion = "advertencia";
+        }
+
+        return prediccion;
+    }
+
+    public double presionReferencia() {
+
+        double presionRef = 0;
+
+        ArrayList<Medicion> listaUltimas24h = null;
+        if (listaMediciones.size() >= 24) {
+            listaUltimas24h = new ArrayList<>(listaMediciones
+                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
+
+            int ultimo = listaUltimas24h.size() - 1;
+            presionRef = listaUltimas24h.get(ultimo).getPresionRef();
+        }
+        return presionRef;
+    }
+
+    public double ultimaPresion() {
+
+        double presionUltima = 0;
+
+        ArrayList<Medicion> listaUltimas24h = null;
+        if (listaMediciones.size() >= 24) {
+            listaUltimas24h = new ArrayList<>(listaMediciones
+                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
+
+            int ultimo = listaUltimas24h.size() - 1;
+
+            presionUltima = listaUltimas24h.get(ultimo).getPresion();
+
+        }
+
+        return presionUltima;
+    }
+
+//    public double ultimaPresion() {
+//        
+//        ArrayList<Medicion> listaMediciones = this.cargarDatosJsonEnArrayList();
+//        double presionUltima = 0;
+//
+//        ArrayList<Medicion> listaUltimas24h = null;
+//        if (listaMediciones.size() >= 24) {
+//            listaUltimas24h = new ArrayList<>(listaMediciones
+//                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
+//
+//            int ultimo = listaUltimas24h.size() - 1;
+//
+//            presionUltima = listaUltimas24h.get(ultimo).getPresion();
+//
+//        }
+//
+//        return presionUltima;
+//    }
+    public double penultimaPresion() {
+
+        double presion1 = 0;
+        double presionPenultima = 0;
+
+        ArrayList<Medicion> listaUltimas24h = null;
+        if (listaMediciones.size() >= 24) {
+            listaUltimas24h = new ArrayList<>(listaMediciones
+                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
+
+            int ultimo = listaUltimas24h.size() - 1;
+
+            presionPenultima = listaUltimas24h.get(ultimo - 1).getPresion();
+
+        }
+        return presionPenultima;
+
+    }
+
+    public boolean caso1() {
+        if (ultimaPresionMayorPresionRef() && presionMenosUltimaPresionMayor6()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean ultimaPresionMayorPresionRef() {
+        if (ultimaPresion() > presionReferencia()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean presionMenosUltimaPresionMayor6() {
+        if ((presion() - ultimaPresion()) > 6) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean caso2() {
+        if (ultimaPresion() < penultimaPresion() - 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean caso3() {
+        if (ultimaPresion() > penultimaPresion() + 1) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean caso4() {
+        if (subeLento()) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean subeLento() {
+
+        boolean subeLento = false;
+        int contador = 0;
+
+        ArrayList<Medicion> listaUltimas24h = null;
+        if (listaMediciones.size() >= 24) {
+            listaUltimas24h = new ArrayList<>(listaMediciones
+                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
+        }
+
+        if (this.getListaParametros() != null) {
+            for (int i = 0; i < listaUltimas24h.size(); i++) {
+
+                if (listaUltimas24h.get(i).getPresion() >= listaUltimas24h.get(i).getPresion()) {
+                    contador++;
+                }
+            }
+        }
+
+        if (contador == 24) {
+            subeLento = true;
+        }
+
+        return subeLento;
+    }
+
+    public double presion() {
+
+        double presion = 0;
+
+        ArrayList<Medicion> listaUltimas24h = null;
+        if (listaMediciones.size() >= 24) {
+            listaUltimas24h = new ArrayList<>(listaMediciones
+                    .subList(listaMediciones.size() - 24, listaMediciones.size()));
+
+            int ultimo = listaUltimas24h.size() - 1;
+            presion = listaUltimas24h.get(0).getPresion()
+                    - (listaUltimas24h.get(ultimo).getPresion());
+
+        }
+
+        return presion;
+
+    }
+
+    public void calcularPresionConAltura(TextField altura, TextField presionRef, ArrayList<Medicion> lista) {
+        // presión a 0m = 1013hPa
+        // 1hPa = 1mbar
+        // 1hPa = 0.750mmHg
+        double alt = Double.parseDouble(altura.getText().toString());
+        double pres = 1013 - (alt * 0.09);
+        presionRef.setText(pres + "");
+    }
+
+    public ArrayList<Medicion> getListaMediciones() {
+        return listaMediciones;
+    }
+
+    public void setListaMediciones(ArrayList<Medicion> listaMediciones) {
+        this.listaMediciones = listaMediciones;
+    }
+
 }

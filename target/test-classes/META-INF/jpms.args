@@ -1,0 +1,4 @@
+--patch-module
+es.miguel.barometro=_
+--add-reads
+es.miguel.barometro=ALL-UNNAMED

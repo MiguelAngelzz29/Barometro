@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BarometroController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">barometro</a> &gt; <a href="index.source.html" class="el_package">es.miguel.barometro</a> &gt; <span class="el_source">BarometroController.java</span></div><h1>BarometroController.java</h1><pre class="source lang-java linenums">package es.miguel.barometro;
+
+import com.google.gson.Gson;
+import es.miguel.barometro.Barometro;
+import es.miguel.barometro.Medicion;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Locale;
+import java.util.Properties;
+import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Control;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Border;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import org.controlsfx.validation.Severity;
+import org.controlsfx.validation.ValidationResult;
+import org.controlsfx.validation.ValidationSupport;
+import org.controlsfx.validation.Validator;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import javafx.scene.control.ListCell;
+
+<span class="nc" id="L50">public class BarometroController implements Initializable {</span>
+
+<span class="nc" id="L52">  private static Gson gson = new Gson();</span>
+<span class="nc" id="L53">    private static Barometro barometro = new Barometro();</span>
+<span class="nc" id="L54">    private static Medicion medicion = new Medicion();</span>
+
+<span class="nc" id="L56">    private static ArrayList&lt;Medicion&gt; listaDatos = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L57">    private static ObservableList&lt;String&gt; horas = FXCollections.observableArrayList(&quot;0:00&quot;, &quot;1:00&quot;, &quot;2:00&quot;, &quot;3:00&quot;, &quot;4:00&quot;, &quot;5:00&quot;,</span>
+            &quot;6:00&quot;, &quot;7:00&quot;, &quot;8:00&quot;, &quot;9:00&quot;, &quot;10:00&quot;, &quot;11:00&quot;, &quot;12:00&quot;, &quot;13:00&quot;, &quot;14:00&quot;, &quot;15:00&quot;,
+            &quot;16:00&quot;, &quot;17:00&quot;, &quot;18:00&quot;, &quot;19:00&quot;, &quot;20:00&quot;, &quot;21:00&quot;, &quot;22:00&quot;, &quot;23:00&quot;);
+
+    @FXML
+    private TextField txtPresion;
+    @FXML
+    private DatePicker txtFecha;
+    @FXML
+    private Button btnGuardar;
+    @FXML
+    private TextField txtAltitud;
+    private TextField txtPresionCal;
+    @FXML
+    private TextField txtVelocidad;
+    @FXML
+    private Button btnActualizar;
+    @FXML
+    private ListView&lt;Medicion&gt; listView;
+    @FXML
+    private DatePicker txtFechaSelect;
+    @FXML
+    private Button btnSalir;
+    @FXML
+    private Button btnBuscar;
+    @FXML
+    private ImageView imageViewIcono;
+    @FXML
+    private TextField txtPresionRef;
+    @FXML
+    private Spinner&lt;String&gt; spinnerHora;
+    @FXML
+    private TextField txtTemperatura;
+    private ResourceBundle bundle;
+    @FXML
+    private Label labelRegistro;
+    @FXML
+    private Label labelPresionRef;
+    @FXML
+    private Label labelPresion;
+    @FXML
+    private Label labeltemperatura;
+    @FXML
+    private Label labelFecha;
+    @FXML
+    private Label labelHora;
+    @FXML
+    private Label labelCalibracion;
+    @FXML
+    private Label labelAltitud;
+    @FXML
+    private Label labelRegistros;
+    @FXML
+    private Label labelSeleccionarFecha;
+    @FXML
+    private Label labelVelocidad;
+    private ValidationSupport validar;
+    private ValidationSupport validar2;
+    private ValidationSupport validar3;
+    @FXML
+    private Button btnIngles;
+    @FXML
+    private Button btnFrances;
+    @FXML
+    private Button btnEspanol;
+    private Properties config;
+    private Locale locale;
+    private ResourceBundle bundles;
+    private Task task;
+    private String idioma;
+    private String pais;
+    private Stage stage; 
+    private double ultimaPresion;
+    private double presionRef;
+    private double presion;
+    private double penultimaPresion;
+    private boolean subeLento;
+    
+    
+private static final String  localizacion = &quot;src/main/resources/es/miguel/registros/idioma.txt&quot;;
+
+private void guardarIdioma() {
+    try {
+        FileWriter escribirRegistros;
+<span class="nc" id="L141">        escribirRegistros = new FileWriter(new File(getClass().getClassLoader().getResource(localizacion).getFile()));</span>
+<span class="nc" id="L142">        BufferedWriter bufferWriter = new BufferedWriter(escribirRegistros);</span>
+<span class="nc" id="L143">        bufferWriter.write(&quot;&quot;);</span>
+<span class="nc" id="L144">        bufferWriter.write(locale.toString());</span>
+<span class="nc" id="L145">        bufferWriter.close();</span>
+<span class="nc" id="L146">    } catch (Exception e) {</span>
+<span class="nc" id="L147">        System.out.println(&quot;Error al guardar datos en &quot; + localizacion);</span>
+<span class="nc" id="L148">        System.out.println(e.getMessage());</span>
+<span class="nc" id="L149">    }</span>
+<span class="nc" id="L150">}</span>
+
+/*private void cargarIdioma() {
+    try {
+        String cadena = &quot;&quot;;
+        BufferedReader br = new BufferedReader(new InputStreamReader(getClass().getClassLoader().getResourceAsStream(localizacion)));
+        String linea;
+
+        while ((linea = br.readLine()) != null) {
+            cadena += linea;
+        }
+
+        String[] cadena2 = cadena.split(&quot;_&quot;);
+        idioma = cadena2[0];
+        pais = cadena2[1];
+
+        br.close();
+    } catch (FileNotFoundException ex) {
+        ex.printStackTrace();
+    } catch (IOException ex) {
+        ex.printStackTrace();
+    }
+}*/
+   private void cargarIdioma() {
+<span class="nc" id="L174">        String localizacion = &quot;src/main/resources/es/miguel/registros/idioma.txt&quot;;</span>
+<span class="nc" id="L175">        String cadena = &quot;&quot;;</span>
+        try {
+<span class="nc" id="L177">            BufferedReader br = new BufferedReader(new FileReader(localizacion));</span>
+            String linea;
+
+<span class="nc bnc" id="L180" title="All 2 branches missed.">            while ((linea = br.readLine()) != null) {</span>
+<span class="nc" id="L181">                cadena += linea;</span>
+            }
+
+<span class="nc" id="L184">            String[] cadena2 = cadena.split(&quot;_&quot;);</span>
+<span class="nc" id="L185">            idioma = cadena2[0];</span>
+<span class="nc" id="L186">            pais = cadena2[1];</span>
+
+<span class="nc" id="L188">            br.close();</span>
+
+<span class="nc" id="L190">        } catch (FileNotFoundException ex) {</span>
+<span class="nc" id="L191">            ex.printStackTrace();</span>
+<span class="nc" id="L192">        } catch (IOException ex) {</span>
+<span class="nc" id="L193">            ex.printStackTrace();</span>
+<span class="nc" id="L194">        }</span>
+<span class="nc" id="L195">    }</span>
+
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        
+<span class="nc" id="L201">        cargarIdioma();</span>
+<span class="nc" id="L202">        locale = new Locale(idioma, pais);</span>
+<span class="nc" id="L203">        bundle = ResourceBundle.getBundle(&quot;es.miguel.idiomas.idioma&quot;, locale);</span>
+        
+<span class="nc" id="L205">        ultimaPresion = barometro.ultimaPresion();</span>
+<span class="nc" id="L206">        presionRef = barometro.presionReferencia();</span>
+<span class="nc" id="L207">        presion = barometro.presion();</span>
+<span class="nc" id="L208">        penultimaPresion = barometro.penultimaPresion();</span>
+<span class="nc" id="L209">        subeLento = barometro.subeLento();</span>
+        
+        
+        
+<span class="nc" id="L213">        cargarImagenesBotones();</span>
+<span class="nc" id="L214">        internalizacion(bundle);</span>
+<span class="nc" id="L215">        validarTextFields();</span>
+<span class="nc" id="L216">        SpinnerValueFactory&lt;String&gt; valueFactory</span>
+                = new SpinnerValueFactory.ListSpinnerValueFactory&lt;String&gt;(horas);
+<span class="nc" id="L218">        valueFactory.setValue(&quot;12:00&quot;);</span>
+<span class="nc" id="L219">        spinnerHora.setValueFactory(valueFactory);</span>
+<span class="nc" id="L220">        txtAltitud.setText(&quot;0&quot;);</span>
+<span class="nc" id="L221">        barometro.cargarDatosJsonEnArrayList();</span>
+<span class="nc" id="L222">        barometro.setListaParametros(listaDatos);</span>
+<span class="nc" id="L223">        txtPresionRef.setEditable(false);</span>
+<span class="nc" id="L224">        mostrarImagen(barometro.calcular(ultimaPresion,presionRef,presion,penultimaPresion,subeLento));</span>
+<span class="nc" id="L225">        barometro.calcularPresionConAltura(txtAltitud, txtPresionRef, listaDatos);</span>
+
+<span class="nc" id="L227">    }</span>
+
+    @FXML
+    private void btnGuardarClick(MouseEvent event) {
+
+<span class="nc" id="L232">        Medicion datos = new Medicion();</span>
+
+<span class="nc" id="L234">        double temp = Double.parseDouble(txtTemperatura.getText());</span>
+<span class="nc" id="L235">        datos.setTemperatura(temp);</span>
+<span class="nc" id="L236">        double pres = Double.parseDouble(txtPresion.getText());</span>
+<span class="nc" id="L237">        datos.setPresion(pres);</span>
+<span class="nc" id="L238">        double vel = Double.parseDouble(txtVelocidad.getText());</span>
+<span class="nc" id="L239">        datos.setVelocidad(vel);</span>
+<span class="nc" id="L240">        GregorianCalendar fech = new GregorianCalendar();</span>
+<span class="nc" id="L241">        String fecha1 = txtFecha.getValue().toString();</span>
+<span class="nc" id="L242">        SimpleDateFormat sdf = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
+<span class="nc" id="L243">        Date date = null;</span>
+        try {
+<span class="nc" id="L245">            date = sdf.parse(fecha1);</span>
+<span class="nc" id="L246">        } catch (Exception e) {</span>
+<span class="nc" id="L247">            e.printStackTrace();</span>
+<span class="nc" id="L248">        }</span>
+
+<span class="nc" id="L250">        fech.setTime(date);</span>
+<span class="nc" id="L251">        datos.setFecha(fech);</span>
+<span class="nc" id="L252">        String[] hora1 = spinnerHora.getValue().toString().split(&quot;:&quot;);</span>
+<span class="nc" id="L253">        int hora = Integer.parseInt(hora1[0]);</span>
+<span class="nc" id="L254">        datos.setHora(hora);</span>
+<span class="nc" id="L255">        double alt = Double.parseDouble(txtAltitud.getText());</span>
+<span class="nc" id="L256">        datos.setAltitud(alt);</span>
+<span class="nc" id="L257">        double presionRef = Double.parseDouble(txtPresionRef.getText());</span>
+<span class="nc" id="L258">        datos.setPresionRef(presionRef);</span>
+
+        //Aquí compruebo que no hay registros repetidos por fecha y hora
+<span class="nc" id="L261">        boolean repetido = false;</span>
+<span class="nc bnc" id="L262" title="All 2 branches missed.">        for (int i = 0; i &lt; listaDatos.size(); i++) {</span>
+
+<span class="nc bnc" id="L264" title="All 2 branches missed.">            if (listaDatos.get(i).getFecha().equals(fech)</span>
+<span class="nc bnc" id="L265" title="All 2 branches missed.">                    &amp;&amp; listaDatos.get(i).getHora() == hora) {</span>
+<span class="nc" id="L266">                repetido = true;</span>
+<span class="nc" id="L267">                Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L268">                alert.setTitle(&quot;ADVERTENCIA&quot;);</span>
+<span class="nc" id="L269">                alert.setHeaderText(&quot;Ya existe una medición en esta fecha y hora&quot;);</span>
+<span class="nc" id="L270">                alert.showAndWait();</span>
+            }
+        }
+
+<span class="nc bnc" id="L274" title="All 2 branches missed.">        if (!repetido) {</span>
+<span class="nc" id="L275">            listaDatos.add(datos);</span>
+
+        }
+<span class="nc" id="L278">        System.out.println(listaDatos);</span>
+
+<span class="nc" id="L280">        barometro.calcular(ultimaPresion,presionRef,presion,penultimaPresion,subeLento);</span>
+<span class="nc" id="L281">        barometro.setIdBarometro(1);</span>
+<span class="nc" id="L282">        barometro.setListaParametros(listaDatos);</span>
+<span class="nc" id="L283">        barometro.escribirDatos(gson.toJson(barometro));</span>
+<span class="nc" id="L284">        limpiar();</span>
+<span class="nc" id="L285">    }</span>
+
+    @FXML
+    private void btnActualizarClick(MouseEvent event) {
+<span class="nc" id="L289">        cargarBarraProgreso();</span>
+        //barometro.leerRegistros();
+<span class="nc" id="L291">        barometro.calcularPresionConAltura(txtAltitud, txtPresionRef, listaDatos);</span>
+<span class="nc" id="L292">    }</span>
+
+    @FXML
+    private void btnSalirClick(MouseEvent event) {
+
+<span class="nc" id="L297">        System.exit(0);</span>
+
+<span class="nc" id="L299">    }</span>
+
+    //Método para limpiar los campos una vez guardada la medición
+    private void limpiar() {
+
+<span class="nc" id="L304">        txtTemperatura.setText(&quot;&quot;);</span>
+<span class="nc" id="L305">        txtPresion.setText(&quot;&quot;);</span>
+<span class="nc" id="L306">        txtVelocidad.setText(&quot;&quot;);</span>
+<span class="nc" id="L307">        txtFecha.setId(&quot;&quot;);</span>
+
+<span class="nc" id="L309">    }</span>
+
+    @FXML
+    private void ListViewMostrarMediciones(MouseEvent event) {
+        ListView&lt;Medicion&gt; listaMedicion;
+<span class="nc" id="L314">        ArrayList&lt;Medicion&gt; lista = barometro.cargarDatosJsonEnArrayList();</span>
+<span class="nc" id="L315">        ArrayList&lt;Medicion&gt; listaProvisional = new ArrayList&lt;&gt;();</span>
+        GregorianCalendar fecha;
+<span class="nc bnc" id="L317" title="All 2 branches missed.">        for (int i = 0; i &lt; lista.size(); i++) {</span>
+<span class="nc" id="L318">            fecha = new GregorianCalendar();</span>
+<span class="nc" id="L319">            fecha = lista.get(i).getFecha();</span>
+<span class="nc" id="L320">            SimpleDateFormat dateFormat = new SimpleDateFormat(&quot;yyyy-MM-dd&quot;);</span>
+
+<span class="nc" id="L322">            String fech = dateFormat.format(fecha.getTime());</span>
+
+<span class="nc bnc" id="L324" title="All 2 branches missed.">            if (fech.equals(txtFechaSelect.getValue().toString())) {</span>
+<span class="nc" id="L325">                listaProvisional.add(lista.get(i));</span>
+            }
+        }
+
+<span class="nc bnc" id="L329" title="All 2 branches missed.">        if (listaProvisional.isEmpty()) {</span>
+<span class="nc" id="L330">            Image advertencia = new Image(getClass().getResourceAsStream(&quot;/es/miguel/iconos/advertencia.png&quot;));</span>
+<span class="nc" id="L331">            imageViewIcono.setImage(advertencia);</span>
+<span class="nc" id="L332">            listView.getItems().clear();</span>
+<span class="nc" id="L333">            Alert alert = new Alert(Alert.AlertType.WARNING);</span>
+<span class="nc" id="L334">            alert.setTitle(&quot;ADVERTENCIA&quot;);</span>
+<span class="nc" id="L335">            alert.setHeaderText(&quot;No hay mediciones para esta fecha&quot;);</span>
+<span class="nc" id="L336">            alert.setContentText(&quot;&quot;);</span>
+<span class="nc" id="L337">            alert.showAndWait();</span>
+
+        }
+
+<span class="nc" id="L341">        ObservableList&lt;Medicion&gt; listaObservable = FXCollections.observableArrayList(listaProvisional);</span>
+<span class="nc" id="L342">        listView.setCellFactory(lv -&gt; new ListCell&lt;Medicion&gt;() {</span>
+            @Override
+            protected void updateItem(Medicion medicion, boolean empty) {
+<span class="nc" id="L345">                super.updateItem(medicion, empty);</span>
+
+<span class="nc bnc" id="L347" title="All 4 branches missed.">                if (empty || medicion == null) {</span>
+<span class="nc" id="L348">                    setText(null);</span>
+                } else {
+<span class="nc" id="L350">                    setText(&quot;Hora: &quot; + medicion.getHora() + &quot; Temperatura &quot;</span>
+<span class="nc" id="L351">                            + medicion.getTemperatura() + &quot; Presión: &quot; + medicion.getPresion()</span>
+<span class="nc" id="L352">                            + &quot; Velocidad Viento: &quot; + medicion.getVelocidad());</span>
+                }
+<span class="nc" id="L354">            }</span>
+        });
+<span class="nc" id="L356">        listView.setItems(listaObservable);</span>
+<span class="nc" id="L357">        barometro.calcular(ultimaPresion,presionRef,presion,penultimaPresion,subeLento);</span>
+
+<span class="nc" id="L359">    }</span>
+
+    private void mostrarImagen(String prediccion) {
+
+<span class="nc bnc" id="L363" title="All 5 branches missed.">        switch (prediccion) {</span>
+
+            case &quot;sol&quot;:
+<span class="nc" id="L366">                Image imageSol = new Image(getClass().getResourceAsStream(&quot;/es/miguel/iconos/sol.png&quot;));</span>
+<span class="nc" id="L367">                imageViewIcono.setImage(imageSol);</span>
+<span class="nc" id="L368">                break;</span>
+            case &quot;nubeSol&quot;:
+<span class="nc" id="L370">                Image nubeSol = new Image(getClass().getResourceAsStream(&quot;/es/miguel/iconos/nubeSol.png&quot;));</span>
+<span class="nc" id="L371">                imageViewIcono.setImage(nubeSol);</span>
+<span class="nc" id="L372">                break;</span>
+            case &quot;tormenta&quot;:
+<span class="nc" id="L374">                Image tormenta = new Image(getClass().getResourceAsStream(&quot;/es/miguel/iconos/tormenta.png&quot;));</span>
+<span class="nc" id="L375">                imageViewIcono.setImage(tormenta);</span>
+<span class="nc" id="L376">                break;</span>
+            case &quot;advertencia&quot;:
+<span class="nc" id="L378">                Image advertencia = new Image(getClass().getResourceAsStream(&quot;/es/miguel/iconos/advertencia.png&quot;));</span>
+<span class="nc" id="L379">                imageViewIcono.setImage(advertencia);</span>
+<span class="nc" id="L380">                break;</span>
+            default:
+<span class="nc" id="L382">                advertencia = new Image(getClass().getResourceAsStream(&quot;/es/miguel/iconos/advertencia.png&quot;));</span>
+<span class="nc" id="L383">                imageViewIcono.setImage(advertencia);</span>
+        }
+<span class="nc" id="L385">    }</span>
+
+    private void internalizacion(ResourceBundle rb) {
+        //Asignamos el valor de cada etiqueta para la internalización.
+<span class="nc" id="L389">        bundle = rb;</span>
+
+<span class="nc" id="L391">        labeltemperatura.setText(bundle.getString(&quot;labelTemperatura&quot;));</span>
+<span class="nc" id="L392">        labelRegistro.setText(bundle.getString(&quot;labelRegistro&quot;));</span>
+<span class="nc" id="L393">        labelPresion.setText(bundle.getString(&quot;labelPresion&quot;));</span>
+<span class="nc" id="L394">        labelVelocidad.setText(bundle.getString(&quot;labelVelocidad&quot;));</span>
+<span class="nc" id="L395">        labelFecha.setText(bundle.getString(&quot;labelFecha&quot;));</span>
+<span class="nc" id="L396">        labelHora.setText(bundle.getString(&quot;labelHora&quot;));</span>
+<span class="nc" id="L397">        labelCalibracion.setText(bundle.getString(&quot;labelCalibracion&quot;));</span>
+<span class="nc" id="L398">        labelPresionRef.setText(bundle.getString(&quot;labelPresionRef&quot;));</span>
+<span class="nc" id="L399">        labelAltitud.setText(bundle.getString(&quot;labelAltitud&quot;));</span>
+<span class="nc" id="L400">        labelRegistros.setText(bundle.getString(&quot;labelRegistros&quot;));</span>
+<span class="nc" id="L401">        labelSeleccionarFecha.setText(bundle.getString(&quot;labelSeleccionarFecha&quot;));</span>
+<span class="nc" id="L402">        btnGuardar.setText(bundle.getString(&quot;btnGuardar&quot;));</span>
+<span class="nc" id="L403">        btnActualizar.setText(bundle.getString(&quot;btnActualizar&quot;));</span>
+<span class="nc" id="L404">        btnBuscar.setText(bundle.getString(&quot;btnSeleccionarFecha&quot;));</span>
+
+<span class="nc" id="L406">    }</span>
+
+    private void validarTextFields() {
+<span class="nc" id="L409">        validar = new ValidationSupport();</span>
+<span class="nc" id="L410">        validar2 = new ValidationSupport();</span>
+<span class="nc" id="L411">        validar3 = new ValidationSupport();</span>
+<span class="nc" id="L412">        validar.registerValidator(txtFecha, Validator</span>
+<span class="nc" id="L413">                .createEmptyValidator(&quot;Este campo es obligatorio&quot;));</span>
+
+<span class="nc" id="L415">        Validator&lt;String&gt; numberValidator = new Validator&lt;String&gt;() {</span>
+            @Override
+            public ValidationResult apply(Control control, String value) {
+
+                boolean condition;
+
+<span class="nc bnc" id="L421" title="All 2 branches missed.">                if (value != null) {</span>
+<span class="nc bnc" id="L422" title="All 2 branches missed.">                    condition = !value.matches(&quot;^-?\\d+$&quot;);</span>
+                } else {
+<span class="nc bnc" id="L424" title="All 2 branches missed.">                    condition = value == null;</span>
+                }
+
+<span class="nc" id="L427">                return ValidationResult.fromMessageIf(control, &quot;no es un número&quot;,</span>
+                        Severity.ERROR, condition);
+            }
+        };
+<span class="nc" id="L431">        validar.registerValidator(txtPresion, true, numberValidator);</span>
+<span class="nc" id="L432">        validar.registerValidator(txtTemperatura, true, numberValidator);</span>
+<span class="nc" id="L433">        validar.registerValidator(txtVelocidad, true, numberValidator);</span>
+
+<span class="nc" id="L435">        btnGuardar.disableProperty().bind(validar.invalidProperty());</span>
+
+<span class="nc" id="L437">        validar2.registerValidator(txtAltitud, true, numberValidator);</span>
+<span class="nc" id="L438">        btnActualizar.disableProperty().bind(validar2.invalidProperty());</span>
+
+<span class="nc" id="L440">        validar3.registerValidator(txtFechaSelect, Validator</span>
+<span class="nc" id="L441">                .createEmptyValidator(&quot;Este campo es obligatorio&quot;));</span>
+<span class="nc" id="L442">        btnBuscar.disableProperty().bind(validar3.invalidProperty());</span>
+<span class="nc" id="L443">    }</span>
+
+    @FXML
+    private void btnEspanolClick(MouseEvent event) {
+<span class="nc" id="L447">        locale = new Locale(&quot;es&quot;, &quot;ES&quot;);</span>
+<span class="nc" id="L448">        ResourceBundle idioma = ResourceBundle.getBundle(&quot;es.miguel.idiomas.idioma&quot;, locale);</span>
+<span class="nc" id="L449">        internalizacion(idioma);</span>
+<span class="nc" id="L450">        guardarIdioma();</span>
+<span class="nc" id="L451">    }</span>
+
+    @FXML
+    private void btnInglesClick(MouseEvent event) {
+<span class="nc" id="L455">        locale = new Locale(&quot;en&quot;, &quot;UK&quot;);</span>
+<span class="nc" id="L456">        ResourceBundle idioma = ResourceBundle.getBundle(&quot;es.miguel.idiomas.idioma&quot;, locale);</span>
+<span class="nc" id="L457">        internalizacion(idioma);</span>
+<span class="nc" id="L458">        guardarIdioma();</span>
+
+<span class="nc" id="L460">    }</span>
+
+    @FXML
+    private void btnFrancesClick(MouseEvent event) {
+<span class="nc" id="L464">        locale = new Locale(&quot;fr&quot;, &quot;FR&quot;);</span>
+<span class="nc" id="L465">        ResourceBundle idioma = ResourceBundle.getBundle(&quot;es.miguel.idiomas.idioma&quot;, locale);</span>
+<span class="nc" id="L466">        internalizacion(idioma);</span>
+<span class="nc" id="L467">        guardarIdioma();</span>
+
+<span class="nc" id="L469">    }</span>
+
+
+
+    private void cargarBarraProgreso() {
+
+        try {
+<span class="nc" id="L476">            FXMLLoader loader = new FXMLLoader(getClass().getResource(&quot;progressBar.fxml&quot;));</span>
+<span class="nc" id="L477">            stage = new Stage();</span>
+<span class="nc" id="L478">            stage.setScene(new Scene(loader.load()));</span>
+<span class="nc" id="L479">            ProgressBarController progresBar = loader.getController();</span>
+<span class="nc" id="L480">            progresBar.setMainController(this);</span>
+<span class="nc" id="L481">            stage.initModality(Modality.APPLICATION_MODAL);</span>
+<span class="nc" id="L482">            stage.show();</span>
+<span class="nc" id="L483">            progresBar.cerrarVentana(stage);</span>
+
+<span class="nc" id="L485">        } catch (Exception e) {</span>
+<span class="nc" id="L486">            e.printStackTrace();</span>
+<span class="nc" id="L487">        }</span>
+<span class="nc" id="L488">    }</span>
+
+    private void cargarImagenesBotones() {
+<span class="nc" id="L491">        btnEspanol.setBorder(Border.EMPTY);</span>
+<span class="nc" id="L492">        btnIngles.setBorder(Border.EMPTY);</span>
+<span class="nc" id="L493">        btnFrances.setBorder(Border.EMPTY);</span>
+
+<span class="nc" id="L495">        URL linkBanderaEs = getClass().getResource(&quot;/es/miguel/iconos/banderaEsp.png&quot;);</span>
+<span class="nc" id="L496">        Image banderaEs = new Image(linkBanderaEs.toString(), 32, 32, false, true);</span>
+<span class="nc" id="L497">        btnEspanol.setGraphic(new ImageView(banderaEs));</span>
+<span class="nc" id="L498">        URL linkBanderaIng = getClass().getResource(&quot;/es/miguel/iconos/banderaIng.png&quot;);</span>
+<span class="nc" id="L499">        Image banderaIng = new Image(linkBanderaIng.toString(), 32, 32, false, true);</span>
+<span class="nc" id="L500">        btnIngles.setGraphic(new ImageView(banderaIng));</span>
+<span class="nc" id="L501">        URL linkBanderaFr = getClass().getResource(&quot;/es/miguel/iconos/banderaFran.png&quot;);</span>
+<span class="nc" id="L502">        Image banderaFr = new Image(linkBanderaFr.toString(), 32, 32, false, true);</span>
+<span class="nc" id="L503">        btnFrances.setGraphic(new ImageView(banderaFr));</span>
+<span class="nc" id="L504">    }</span>
+
+    public ImageView getImageViewIcono() {
+<span class="nc" id="L507">        return imageViewIcono;</span>
+    }
+
+    public void setImageViewIcono(ImageView imageViewIcono) {
+<span class="nc" id="L511">        this.imageViewIcono = imageViewIcono;</span>
+<span class="nc" id="L512">    }</span>
+    
+    
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
