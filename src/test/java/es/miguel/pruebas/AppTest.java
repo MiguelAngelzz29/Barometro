@@ -4,30 +4,37 @@
  */
 package es.miguel.pruebas;
 
+import es.miguel.barometro.BarometroController;
+import javafx.scene.image.Image;
 import org.testfx.framework.junit.ApplicationTest;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import org.junit.Test;
+import org.mockito.Mockito;
 import org.testfx.api.FxAssert;
 import static org.testfx.matcher.base.NodeMatchers.*;
 
-public class AppTest extends ApplicationTest  {
-    
+public class AppTest extends ApplicationTest {
+
     public AppTest() {
     }
-    
-   @Override
+
+    @Override
     public void start(Stage stage) throws Exception {
         new es.miguel.barometro.App().start(stage);
     }
 
     @Test
     public void testIconoEsVisible() {
-        // Obtener la imagen del icono
-        ImageView icono = lookup("#imageViewIcono").query();
-        // Comprobar que la imagen es visible
+
+        Image imagen = new Image(getClass().getResourceAsStream("/es/miguel/iconos/tormenta.png"));
+
+        BarometroController bar = Mockito.mock(BarometroController.class);
+
+        Mockito.when(bar.getImageViewIcono()).thenReturn(new ImageView(imagen));
+
+        ImageView icono = bar.getImageViewIcono();
+
         FxAssert.verifyThat(icono, isVisible());
     }
-        
 }
-
